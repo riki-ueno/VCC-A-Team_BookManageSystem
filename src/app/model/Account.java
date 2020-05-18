@@ -13,7 +13,7 @@ public class Account {
 	private String password;
 	private String hashedPassword;
 	private Date joinedAt;
-	private boolean isLibraryStaff;
+	private int isLibraryStaff;
 
 	public int getId() {
 		return id;
@@ -63,11 +63,12 @@ public class Account {
 		this.joinedAt = joinedAt;
 	}
 
-	public boolean isLibraryStaff() {
+
+	public int getIsLibraryStaff() {
 		return isLibraryStaff;
 	}
 
-	public void setLibraryStaff(boolean isLibraryStaff) {
+	public void setIsLibraryStaff(int isLibraryStaff) {
 		this.isLibraryStaff = isLibraryStaff;
 	}
 

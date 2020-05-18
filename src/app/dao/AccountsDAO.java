@@ -32,8 +32,7 @@ public class AccountsDAO extends DAOBase{
 			if (rs.next()) {
 				account.setName(rs.getString("name"));
 				int isLibraryStaff = rs.getInt("is_library_staff");
-				System.out.println(isLibraryStaff == 1);
-				account.setLibraryStaff(isLibraryStaff == 1);
+				account.setIsLibraryStaff(isLibraryStaff);
 			}
 
 			System.out.println("test");
