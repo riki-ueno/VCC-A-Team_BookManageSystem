@@ -12,28 +12,16 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.stereotype.Component;
-//
-//@Component
 public class Mail {
-	// private static final Logger log = LoggerFactory.getLogger(Mail.class);
 
-	public static void main(String[] args) {
-		Mail mailSend = new Mail();
-		mailSend.send("JavaMail テストメール", "テストメールの本文");
-	}
-
-	public void send(String subject, String content) {
+	public static void send(String subject, String content) {
 
 		final String to = "testaddress.lib@gmail.com";
 		final String from = "testaddress.lib@gmail.com";
 
-		// Google account mail address
-		final String username = "testaddress.lib@gmail.com";
-		// Google App password
-		final String password = "library111/";
+		final String username = "testaddress.lib@gmail.com"; // Google account
+																// mail address
+		final String password = "library111/"; // Google App password
 
 		// final String charset = "ISO-2022-JP";
 		final String charset = "UTF-8";
@@ -45,18 +33,13 @@ public class Mail {
 		String port = "587";
 		String starttls = "true";
 
-		// for local
-		// String host = "localhost";
-		// String port = "2525";
-		// String starttls = "false";
-
 		Properties props = new Properties();
 		props.put("mail.smtp.host", host);
 		props.put("mail.smtp.port", port);
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", starttls);
 
-		props.put("mail.smtp.connectiontimeout", "10000");
+		props.put("mail.smtp.connectiontimeout", "10000");// timeoutの設定
 		props.put("mail.smtp.timeout", "10000");
 
 		props.put("mail.debug", "true");
@@ -72,7 +55,7 @@ public class Mail {
 			MimeMessage message = new MimeMessage(session);
 
 			// Set From:
-			message.setFrom(new InternetAddress(from, "aaa"));
+			message.setFrom(new InternetAddress(from, "図書管理システム"));
 			// Set ReplyTo:
 			message.setReplyTo(new Address[] { new InternetAddress(from) });
 			// Set To:
