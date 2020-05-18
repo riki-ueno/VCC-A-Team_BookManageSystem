@@ -40,10 +40,8 @@ public class LoginCertificationServlet extends HttpServlet {
 		Map <String, String> responseData = new HashMap<>();
 		if(account_name != null) {
 			responseData.put("result", "true");
-			responseData.put("account_name", (String) session.getAttribute("account_name"));
-			int a = (int) session.getAttribute("account_is_library_staff");
-			Integer oi = new Integer(a);
-			responseData.put("account_is_library_staff", oi.toString());
+			responseData.put("account_name", account_name);
+			responseData.put("account_is_library_staff", session.getAttribute("account_is_library_staff").toString());
 			pw.append(new ObjectMapper().writeValueAsString(responseData));
 		}else {
 			responseData.put("result", "false");
