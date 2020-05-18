@@ -7,7 +7,7 @@ function submit() {
 
     $.ajax({
         type : 'POST',
-        url : '/BookManagementSystem/api/auth/login',
+        url : '/BookManageSystem/api/auth/login',
         dataType: "json",
         data: requestQuery,
         success: function(result) {
@@ -23,9 +23,7 @@ function submit() {
         }
     })
 }
-
 $(document).ready(function () {
     'use strict';
-
     $("#submit").bind('click', submit)
 });
