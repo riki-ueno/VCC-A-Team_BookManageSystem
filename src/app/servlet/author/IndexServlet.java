@@ -24,7 +24,6 @@ public class IndexServlet extends HttpServlet {
 
     public IndexServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,6 +31,4 @@ public class IndexServlet extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 		pw.append(new ObjectMapper().writeValueAsString(authorList));
 	}
-
-
 }
