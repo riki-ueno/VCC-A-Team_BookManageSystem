@@ -28,7 +28,7 @@ public class RentalServlet extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int accountId = (int) request.getSession().getAttribute("account_id");
+		int accountId = Integer.parseInt((String) request.getSession().getAttribute("account_id"));
 		int bookId = Integer.parseInt(request.getParameter("book[id]"));
 
 		boolean result = RentalService.call(bookId, accountId);
