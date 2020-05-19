@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="js/LoginCertification.js"></script>
+<script type="text/javascript" src="js/regist.js"></script>
+<title>書籍登録画面</title>
+</head>
+<body>
+<h1>書籍登録</h1>
+<label>タイトル</label>
+<input type="text" id="book_title" />
+<label>著者</label>
+<input type="text" class="author_name" id="author_name_1" list="author_names" />
+<datalist id="author_names">
+<option>著者1</option>
+</datalist>
+<label>出版社</label>
+<input type="text" class="publisher_name" id="publisher_name" list="publisher_names" />
+<datalist id="publisher_names"></datalist>
+<label>ジャンル</label>
+<input type="text" class="genre_id" id="genre_id_1" list="genere_ids" />
+<datalist id="genre_ids"></datalist>
+<label>購入者</label>
+<input type="text" id="purchaser_name" />
+<label>購入日</label>
+<input type="text" id="purchased_at" placeholder="2020/05/01" />
+<input type="button" id="regist" value="登録"/>
+<input type="button" id="regist_continue" value="続けて登録"/>
+
+
+
+</body>
+</html>
