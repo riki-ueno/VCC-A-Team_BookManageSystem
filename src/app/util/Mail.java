@@ -14,13 +14,12 @@ import javax.mail.internet.MimeMessage;
 
 public class Mail {
 
-	public static void send(String subject, String content) {
+	public static void send(String subject, String content, String reciever) {
 
-		final String to = "testaddress.lib@gmail.com";
+		final String to = reciever;
 		final String from = "testaddress.lib@gmail.com";
 
 		final String username = "testaddress.lib@gmail.com"; // Google account
-																// mail address
 		final String password = "library111/"; // Google App password
 
 		// final String charset = "ISO-2022-JP";
