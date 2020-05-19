@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class Return {
 	private int id;
-	private int rental_id;
+	private int rentalId;
 	private Date returnedAt;
 
 	public int getId() {
@@ -15,12 +15,12 @@ public class Return {
 		this.id = id;
 	}
 
-	public int getRental_id() {
-		return rental_id;
+	public int getRentalId() {
+		return rentalId;
 	}
 
-	public void setRental_id(int rental_id) {
-		this.rental_id = rental_id;
+	public void setRentalId(int rentalId) {
+		this.rentalId = rentalId;
 	}
 
 	public Date getReturnedAt() {
