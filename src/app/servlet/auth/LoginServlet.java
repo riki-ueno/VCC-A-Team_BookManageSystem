@@ -38,6 +38,7 @@ public class LoginServlet extends HttpServlet {
 
 		if (account.getName() != null) {
 			HttpSession session = request.getSession(true);
+			session.setAttribute("account_id", account.getId());
 			session.setAttribute("account_name", account.getName());
 			session.setAttribute("account_is_library_staff", account.getIsLibraryStaff());
 		}
