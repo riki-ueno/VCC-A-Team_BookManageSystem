@@ -14,7 +14,7 @@ public class AccountsDAO extends DAOBase{
 	public Account login(String mailAddress, String hashedPassword) {
 		String sql =
 				"select "
-					+ "NAME, IS_LIBRARY_STAFF "
+					+ "ID, NAME, IS_LIBRARY_STAFF "
 				+ "from "
 					+ "ACCOUNTS "
 				+ "where "
@@ -30,6 +30,7 @@ public class AccountsDAO extends DAOBase{
 			ResultSet rs = pstmt.executeQuery();
 
 			if (rs.next()) {
+				account.setId(rs.getInt("id"));
 				account.setName(rs.getString("name"));
 				int isLibraryStaff = rs.getInt("is_library_staff");
 				account.setIsLibraryStaff(isLibraryStaff);
