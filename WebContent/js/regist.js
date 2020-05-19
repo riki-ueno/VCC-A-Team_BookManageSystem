@@ -91,18 +91,16 @@ function regist() {
 	var publisherName = $('#publisher_name').val();
 	var purchaserName = $('#purchaser_name').val();
 	var purchasedAt = $('#purchased_at').val();
-	var authorNames =[] ;
+	var authorNames = [] ;
 	var authorNameElements = $('.author_name');
 	for(var i=0;i<authorNameElements.length;i++){
-		authorNames.push({'name':authorNameElements[i].value});
+		authorNames.push(authorNameElements[i].value);
 	}
-	var genreNames =[] ;
+	var genreNames = [] ;
 	var genreNameElements = $('.genre_name');
 	for(var i=0;i<genreNameElements.length;i++){
-		genreNames.push({'name':genreNameElements[i].value});
+		genreNames.push(genreNameElements[i].value);
 	}
-	
-	
 	var requestQuery = {
 		book : {
 			title : title,
@@ -114,18 +112,18 @@ function regist() {
 		publisher : {
 			name : publisherName
 		}
-	}
+	};
 	console.log(requestQuery);
-// $.ajax({
-// type : 'GET',
-// url : '',
-// dataType : '',
-// data : requestQuery,
-// success : function() {
-//
-// },
-// error : function() {
-//
-// }
-// });
+	$.ajax({
+	 type : 'POST',
+	 url : '/BookManageSystem/api/book/regist',
+	 dataType:'json',
+	 data : requestQuery,
+	 success : function() {
+		 alert('書籍の登録が完了しました。');
+	 },
+	 error : function() {
+		 alert('登録できませんでした。入力情報を確認してください。');
+	 }
+	 });
 }
