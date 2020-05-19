@@ -1,4 +1,4 @@
-package app.servlet.genre;
+package app.servlet.author;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import app.dao.GenresDAO;
-import app.model.Genre;
+import app.dao.AuthorsDAO;
+import app.model.Author;
 
 /**
  * Servlet implementation class IndexServlet
  */
-@WebServlet(name = "GenreIndexServlet", urlPatterns = { "/api/genre/index" })
+@WebServlet(name = "AuthorIndexServlet", urlPatterns = { "/api/author/index" })
 public class IndexServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -27,8 +27,8 @@ public class IndexServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Genre> genreList = new GenresDAO().all();
+		List<Author> authorList = new AuthorsDAO().all();
 		PrintWriter pw = response.getWriter();
-		pw.append(new ObjectMapper().writeValueAsString(genreList));
+		pw.append(new ObjectMapper().writeValueAsString(authorList));
 	}
 }
