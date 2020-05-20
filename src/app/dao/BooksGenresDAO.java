@@ -1,7 +1,6 @@
 package app.dao;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import app.model.BooksGenres;
@@ -24,22 +23,4 @@ public class BooksGenresDAO extends DAOBase {
 			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
 		}
 	}
-
-	public int countAll() {
-		String sql = "SELECT id FROM books_genres order by id";
-		try (PreparedStatement pstmt = createPreparedStatement(sql);) {
-			ResultSet rs = pstmt.executeQuery();
-			int counter = 0;
-
-			while (rs.next()) {
-				counter++;
-			}
-
-			return counter;
-
-		} catch (SQLException e) {
-			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
-		}
-	}
-
 }

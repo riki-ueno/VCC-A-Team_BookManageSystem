@@ -1,7 +1,6 @@
 package app.dao;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import app.model.BooksAuthors;
@@ -20,23 +19,6 @@ public class BooksAuthorsDAO extends DAOBase {
 			int count = pstmt.executeUpdate();
 
 			return count == 1;
-		} catch (SQLException e) {
-			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
-		}
-	}
-
-	public int countAll() {
-		String sql = "SELECT id FROM books_authors order by id";
-		try (PreparedStatement pstmt = createPreparedStatement(sql);) {
-			ResultSet rs = pstmt.executeQuery();
-			int counter = 0;
-
-			while (rs.next()) {
-				counter++;
-			}
-
-			return counter;
-
 		} catch (SQLException e) {
 			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
 		}
