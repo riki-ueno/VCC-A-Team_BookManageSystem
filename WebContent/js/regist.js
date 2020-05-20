@@ -71,7 +71,12 @@ function　setTestValues() {
 	addGenreNameForm();
 	$('#genre_name_3').val('ジャンル3');
 	$('#purchaser_name').val('購入者');
-	$('#purchased_at').val('購入日');
+	$('#purchased_at').val('2020-05-01');
+}
+
+function test(){
+	var date = $('#purchased_at').val();
+	console.log(date);
 }
 
 
@@ -83,7 +88,7 @@ $(document).ready(function() {
 	$('#add_author_name_form').click(addAuthorNameForm);
 	$('#add_genre_name_form').click(addGenreNameForm);
 	$('#regist').click(regist);
-	
+	$('#date_value_test_button').click(test);
 });
 
 function regist() {
@@ -127,3 +132,5 @@ function regist() {
 	 }
 	 });
 }
+
+
