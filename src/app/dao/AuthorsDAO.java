@@ -58,8 +58,9 @@ public class AuthorsDAO extends DAOBase {
 	}
 
 	public int convertAuthorNameToAuthorId(String authorName) {
-		String sql = "SELECT a.id FROM authors a WHERE a.name = '" + authorName + "'";
+		String sql = "SELECT a.id FROM authors a WHERE a.name = ?";
 		try (PreparedStatement pstmt = createPreparedStatement(sql);) {
+			pstmt.setString(1, authorName);
 			ResultSet rs = pstmt.executeQuery();
 
 			if (rs.next()) {
