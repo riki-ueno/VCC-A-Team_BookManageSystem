@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -16,7 +17,7 @@ import app.service.RentalService;
 /**
  * Servlet implementation class RentalServlet
  */
-@WebServlet("/RentalServlet")
+@WebServlet("/api/book/rental")
 public class RentalServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -28,7 +29,8 @@ public class RentalServlet extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int accountId = Integer.parseInt((String) request.getSession().getAttribute("account_id"));
+		HttpSession session = request.getSession(true);
+		int accountId = (int) session.getAttribute("account_id");
 		int bookId = Integer.parseInt(request.getParameter("book[id]"));
 
 		boolean result = RentalService.call(bookId, accountId);
