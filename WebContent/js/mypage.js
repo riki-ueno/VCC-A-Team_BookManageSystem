@@ -49,14 +49,45 @@ var getrentalInfo = function(){
 						index = i+1;
 						tableElemnt += '<tr>';
 						tableElemnt += '<td>'+index+'</td>';
-						tableElemnt += '<td id=genre'+rental.id+'>ここにジャンル</td>';
+						tableElemnt += '<td id=genre'+index+'></td>';
 						tableElemnt += '<td>'+rental.book.title+'</td>';
 						tableElemnt += '<td>'+rental.book.publisher.name+'</td>';
-						tableElemnt += '<td id=author'+rental.id+'>ここに著者</td>';
+						tableElemnt += '<td id=author'+index+'></td>';
 						tableElemnt += '<td>'+rental.returnDeadline+'</td>';
-						tableElemnt += '<td><button class=return type="submit">返却</button></td>';
+						tableElemnt += '<td><button class=returnBook type="submit" value="'+rental.id+'">返却</button></td>';
 					}
 				$('#rentalTableContainer').html(tableElemnt);
+				$('.returnBook').click(returnBook);
+			}else if(json.length == 0){
+				$('#rentalContainer').html('借りている本はありません。');
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert('データベースの接続に失敗しました');
+			$('#rentalContainer').html('借りている本はありません。');
+			console.log(errorThrown)
+		}
+	});
+}
+var getauthorInfo = function(){
+	parameter = 'author';
+	var requestQuery = {
+			parameter : parameter,
+		};
+	$.ajax({
+		type:'GET',
+		dataType:'json',
+		url:'/BookManageSystem/api/auth/rented',
+		data : requestQuery,
+		success : function(json) {
+			console.log('返却値', json);
+			if(json.length > 0){
+				var index=0;
+				for (var i=0; i < json.length; i++) {
+					index = i+1;
+					var rental = json[i];
+					$('#author'+index).html(rental.name);
+				}
 			}else if(json.length == 0){
 				$('#rentalContainer').html('登録している申請がありません。');
 			}
@@ -68,8 +99,45 @@ var getrentalInfo = function(){
 		}
 	});
 }
+var getGenreInfo = function(){
+	parameter = 'genre';
+	var requestQuery = {
+			parameter : parameter,
+		};
+	$.ajax({
+		type:'GET',
+		dataType:'json',
+		url:'/BookManageSystem/api/auth/rented',
+		data : requestQuery,
+		success : function(json) {
+			console.log('返却値', json);
+			if(json.length > 0){
+				var index=0;
+				for (var i=0; i < json.length; i++) {
+					index = i+1;
+					var genre = json[i];
+					$('#genre'+index).html(genre.name);
+				}
+			}else if(json.length == 0){
+				$('#rentalContainer').html('登録している申請がありません。');
+			}
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert('データベースの接続に失敗しました');
+			$('#rentalContainer').html('登録している申請がありません。');
+			console.log(errorThrown)
+		}
+	});
+}
+var returnBook = function(){
+	var inputRentalId = document.activeElement.value;
+	var url = './rentalConfirm.html?q='+inputRentalId;
+	location.href=url;
+}
 $(document).ready(function () {
     'use strict';
     LoginCertificate();
     getrentalInfo();
+    getauthorInfo();
+    getGenreInfo();
 });

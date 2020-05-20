@@ -40,6 +40,10 @@ public class RentedServlet extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 		if(parameter.equals("rental")){
 			pw.append(new ObjectMapper().writeValueAsString(rentedDAO.rentalList(name)));
+		}else if(parameter.equals("author")){
+			pw.append(new ObjectMapper().writeValueAsString(rentedDAO.authorList(name)));
+		}else if(parameter.equals("genre")){
+			pw.append(new ObjectMapper().writeValueAsString(rentedDAO.genreList(name)));
 		}
 
 	}
