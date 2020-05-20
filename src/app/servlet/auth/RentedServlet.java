@@ -36,15 +36,8 @@ public class RentedServlet extends HttpServlet {
 		RentedDAO rentedDAO = new RentedDAO();
 		HttpSession session = request.getSession(true);
 		String name = (String) session.getAttribute("account_name");
-		String parameter = request.getParameter("parameter");
 		PrintWriter pw = response.getWriter();
-		if(parameter.equals("rental")){
-			pw.append(new ObjectMapper().writeValueAsString(rentedDAO.rentalList(name)));
-		}else if(parameter.equals("author")){
-			pw.append(new ObjectMapper().writeValueAsString(rentedDAO.authorList(name)));
-		}else if(parameter.equals("genre")){
-			pw.append(new ObjectMapper().writeValueAsString(rentedDAO.genreList(name)));
-		}
+		pw.append(new ObjectMapper().writeValueAsString(rentedDAO.rentalList(name)));
 
 	}
 

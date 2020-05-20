@@ -8,6 +8,20 @@ public class Reservation {
 	private int bookId;
 	private Book book;
 	private Date returnedAt;
+	private String bookAuthorsName;
+	private String bookGenresName;
+	public String getBookAuthorsName() {
+		return bookAuthorsName;
+	}
+	public void setBookAuthorsName(String bookAuthorsName) {
+		this.bookAuthorsName = bookAuthorsName;
+	}
+	public String getBookGenresName() {
+		return bookGenresName;
+	}
+	public void setBookGenresName(String bookGenresName) {
+		this.bookGenresName = bookGenresName;
+	}
 	public int getId() {
 		return id;
 	}

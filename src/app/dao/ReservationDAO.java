@@ -4,11 +4,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
-import app.model.Author;
 import app.model.Book;
-import app.model.Genre;
 import app.model.Reservation;
 
 public class ReservationDAO extends DAOBase {
@@ -24,8 +24,14 @@ public class ReservationDAO extends DAOBase {
 		) {
 			List<Reservation> reservationList = new ArrayList<>();
 			while(rs1.next()){
+				String str1 = rs1.getString("AUTHORS_NAME");
+				String str2 = rs1.getString("GENRES_NAME");
+				String authorNames = reString(str1);
+				String genreNames = reString(str2);
 				Reservation reservation = new Reservation();
 				Book book = new Book();
+				book.setAuthorNames(authorNames);
+				book.setGenreNames(genreNames);
 				book.setTitle(rs1.getString("TITLE"));
 				book.setId(rs1.getInt("BOOKID"));
 				book.setPurchaserName(rs1.getString("PUBULISHER_NAME"));
@@ -38,40 +44,31 @@ public class ReservationDAO extends DAOBase {
 			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
 		}
 	}
-	public List<Author> authorList (String name) {
-		String AuthorSql = creatReservationAuthorSql(name);
-		try (
-				PreparedStatement pstmt1 = createPreparedStatement(AuthorSql);
-				ResultSet rs1 = pstmt1.executeQuery();
-		) {
-			List<Author> authorList  = new ArrayList<>();
-			while(rs1.next()){
-				Author author = new Author();
-				author.setName(rs1.getString("AUTHORS_NAME"));
-				authorList.add(author);
-			}
-			return authorList;
-		} catch (SQLException e) {
-			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
+	private String reString(String str) {
+		String[] str1 = str.split("/", 0);
+		Object[] str2 = eliminateDuplicates(str1);
+		String[] str3 = new String[str2.length];
+		for(int i=0;i<str2.length;i++){
+			str3[i] = (String) str2[i];
 		}
+		String strFinal = String.join("/", str3);
+		return strFinal;
 	}
-	public List<Genre> genreList (String name) {
-		String GenreSql = creatReservationGenreSql(name);
-		try (
-				PreparedStatement pstmt1 = createPreparedStatement(GenreSql);
-				ResultSet rs1 = pstmt1.executeQuery();
-		) {
-			List<Genre> genreList  = new ArrayList<>();
-			while(rs1.next()){
-				Genre genre = new Genre();
-				genre.setName(rs1.getString("GENRES_NAME"));
-				genreList.add(genre);
-			}
-			return genreList;
-		} catch (SQLException e) {
-			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
-		}
-	}
+	private static Object[] eliminateDuplicates(String[] strings) {
+
+	    // LinkedHashSetオブジェクトを用意
+	    Set<String> linkedHashSet = new LinkedHashSet<String>();
+
+	    // 配列の要素を順にLinkedHashSetオブジェクトへ追加
+	    for (int i = 0; i < strings.length; i++) {
+	    linkedHashSet.add(strings[i]);
+	    }
+
+	    // LinkedHashSetオブジェクトを配列に変換
+	    Object[] strings_after = linkedHashSet.toArray();
+
+	    return strings_after;
+	  }
 	public void ReservationCancel(String bookId){
 		String sql="update BOOKS \n" +
 				"set RESERVER_ID = '' \n" +
@@ -93,6 +90,8 @@ public class ReservationDAO extends DAOBase {
 				",b.TITLE \n" +
 				",p.NAME pubulisher_name \n" +
 				",rt.RETURNED_AT \n" +
+				",LISTAGG(ah.NAME, '/') WITHIN GROUP (order by ah.NAME) AS authors_name \n" +
+				",LISTAGG(g.NAME, '/') WITHIN GROUP (order by g.NAME) AS genres_name \n" +
 				" \n" +
 				"from \n" +
 				"BOOKS b \n" +
@@ -100,6 +99,10 @@ public class ReservationDAO extends DAOBase {
 				",PUBLISHERS p \n" +
 				",RENTALS r \n" +
 				",RETURNS rt \n" +
+				",BOOKS_AUTHORS ba \n" +
+				",AUTHORS ah \n" +
+				",GENRES g \n" +
+				",BOOKS_GENRES bg \n" +
 				" \n" +
 				"where 1=1 \n" +
 				"and a.NAME = '"+name+"' \n" +
@@ -107,65 +110,15 @@ public class ReservationDAO extends DAOBase {
 				"and b.PUBLISHER_ID = p.ID \n" +
 				"and b.ID = r.BOOK_ID(+) \n" +
 				"and r.ID = rt.RENTAL_ID(+) \n" +
-				" \n" +
-				"order by \n" +
-				"b.ID \n";
-		return sql;
-	}
-	private String creatReservationAuthorSql(String name) {
-		String sql = "select \n" +
-				"b.ID bookId \n" +
-				",LISTAGG(ah.NAME, '/') WITHIN GROUP (order by ah.NAME) AS authors_name \n" +
-				" \n" +
-				"from \n" +
-				"BOOKS b \n" +
-				",ACCOUNTS a \n" +
-				",BOOKS_AUTHORS ba \n" +
-				",AUTHORS ah \n" +
-				",RENTALS r \n" +
-				",RETURNS rt \n" +
-				" \n" +
-				"where 1=1 \n" +
-				"and a.NAME = '"+name+"' \n" +
-				"and b.RESERVER_ID = a.ID \n" +
 				"and ba.BOOK_ID = b.ID \n" +
 				"and ah.ID = ba.AUTHOR_ID \n" +
-				"and b.ID = r.BOOK_ID(+) \n" +
-				"and r.ID = rt.RENTAL_ID(+) \n" +
-				" \n" +
-				"GROUP BY \n" +
-				"b.ID,b.TITLE \n" +
-				"order by \n" +
-				"b.ID \n";
-		return sql;
-	}
-	private String creatReservationGenreSql(String name) {
-		String sql = "select  \n" +
-				"b.ID as bookId \n" +
-				",LISTAGG(g.NAME, '/') WITHIN GROUP (order by g.NAME) AS genres_name \n" +
-				" \n" +
-				"from \n" +
-				"BOOKS b \n" +
-				",ACCOUNTS a \n" +
-				",RENTALS r \n" +
-				",GENRES g \n" +
-				",BOOKS_GENRES bg \n" +
-				",RETURNS rt \n" +
-				" \n" +
-				"where 1=1 \n" +
-				"and a.NAME = '"+name+"' \n" +
-				"and b.RESERVER_ID = a.ID \n" +
 				"and bg.BOOK_ID = b.ID \n" +
 				"and g.ID = bg.GENRE_ID \n" +
-				"and b.ID = r.BOOK_ID(+) \n" +
-				"and r.ID = rt.RENTAL_ID(+) \n" +
 				" \n" +
 				"group by \n" +
-				"b.ID \n" +
-				" \n" +
+				"b.ID,b.RESERVER_ID,b.TITLE,p.NAME,rt.RETURNED_AT \n" +
 				"order by \n" +
-				"b.ID \n" +
-				" \n";
+				"b.ID \n";
 		return sql;
 	}
 }

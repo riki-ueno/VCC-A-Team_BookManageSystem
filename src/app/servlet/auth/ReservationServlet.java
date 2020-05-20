@@ -36,15 +36,9 @@ public class ReservationServlet extends HttpServlet {
 		ReservationDAO reservationDAO = new ReservationDAO();
 		HttpSession session = request.getSession(true);
 		String name = (String) session.getAttribute("account_name");
-		String parameter = request.getParameter("parameter");
 		PrintWriter pw = response.getWriter();
-		if(parameter.equals("Reservation")){
-			pw.append(new ObjectMapper().writeValueAsString(reservationDAO.ReservationList(name)));
-		}else if(parameter.equals("ReservationAuthor")){
-			pw.append(new ObjectMapper().writeValueAsString(reservationDAO.authorList(name)));
-		}else if(parameter.equals("ReservationGenre")){
-			pw.append(new ObjectMapper().writeValueAsString(reservationDAO.genreList(name)));
-		}
+		pw.append(new ObjectMapper().writeValueAsString(reservationDAO.ReservationList(name)));
+
 	}
 
 	/**
