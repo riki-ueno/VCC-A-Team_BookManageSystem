@@ -12,19 +12,19 @@ import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import app.dao.RentedDAO;
+import app.dao.ReservationDAO;
 
 /**
- * Servlet implementation class RentingServlet
+ * Servlet implementation class ReservationServlet
  */
-@WebServlet("/api/auth/rented")
-public class RentedServlet extends HttpServlet {
+@WebServlet("/api/auth/reservation")
+public class ReservationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RentedServlet() {
+    public ReservationServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,11 +33,11 @@ public class RentedServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RentedDAO rentedDAO = new RentedDAO();
+		ReservationDAO reservationDAO = new ReservationDAO();
 		HttpSession session = request.getSession(true);
 		String name = (String) session.getAttribute("account_name");
 		PrintWriter pw = response.getWriter();
-		pw.append(new ObjectMapper().writeValueAsString(rentedDAO.rentalList(name)));
+		pw.append(new ObjectMapper().writeValueAsString(reservationDAO.ReservationList(name)));
 
 	}
 
@@ -45,7 +45,11 @@ public class RentedServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		ReservationDAO reservationDAO = new ReservationDAO();
+		String bookId = request.getParameter("bookId");
+		reservationDAO.ReservationCancel(bookId);
+		PrintWriter pw = response.getWriter();
+		pw.append(new ObjectMapper().writeValueAsString("ok"));
 	}
 
 }

@@ -9,42 +9,37 @@ import java.util.List;
 import java.util.Set;
 
 import app.model.Book;
-import app.model.Publisher;
-import app.model.Rental;
+import app.model.Reservation;
 
-public class RentedDAO extends DAOBase {
+public class ReservationDAO extends DAOBase {
 
-	public RentedDAO() {
+	public ReservationDAO() {
 		super();
 	}
-
-	public List<Rental> rentalList (String name) {
-		String RentalSql= creatRentalSql(name);
+	public List<Reservation> ReservationList (String name) {
+		String reservationSql= creatReservationSql(name);
 		try (
-				PreparedStatement pstmt1 = createPreparedStatement(RentalSql);
+				PreparedStatement pstmt1 = createPreparedStatement(reservationSql);
 				ResultSet rs1 = pstmt1.executeQuery();
 		) {
-			List<Rental> rentalList = new ArrayList<>();
+			List<Reservation> reservationList = new ArrayList<>();
 			while(rs1.next()){
 				String str1 = rs1.getString("AUTHORS_NAME");
 				String str2 = rs1.getString("GENRES_NAME");
 				String authorNames = reString(str1);
 				String genreNames = reString(str2);
-				Rental rental = new Rental();
-				rental.setReturnDeadline(rs1.getDate("RETURN_DEADLINE"));
+				Reservation reservation = new Reservation();
 				Book book = new Book();
 				book.setAuthorNames(authorNames);
 				book.setGenreNames(genreNames);
-				Publisher publisher = new Publisher();
 				book.setTitle(rs1.getString("TITLE"));
 				book.setId(rs1.getInt("BOOKID"));
-				publisher.setName(rs1.getString("PUBULISHER_NAME"));
-				book.setPublisher(publisher);
-				rental.setBook(book);
-				rental.setId(rs1.getInt("ID"));
-				rentalList.add(rental);
+				book.setPurchaserName(rs1.getString("PUBULISHER_NAME"));
+				reservation.setReturnedAt(rs1.getDate("RETURNED_AT"));
+				reservation.setBook(book);
+				reservationList.add(reservation);
 			}
-			return rentalList;
+			return reservationList;
 		} catch (SQLException e) {
 			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
 		}
@@ -74,17 +69,29 @@ public class RentedDAO extends DAOBase {
 
 	    return strings_after;
 	  }
-	private String creatRentalSql(String name) {
-		String sql ="select \n" +
-				"r.ID \n" +
+	public void ReservationCancel(String bookId){
+		String sql="update BOOKS \n" +
+				"set RESERVER_ID = '' \n" +
+				"where ID = '"+bookId+"'";
+		try (
+				PreparedStatement pstmt = createPreparedStatement(sql);
+		) {
+			pstmt.executeUpdate();
+			System.out.println("test");
+
+		} catch (SQLException e) {
+			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
+		}
+	}
+	private String creatReservationSql(String name) {
+		String sql = "select \n" +
+				"b.ID bookId \n" +
+				",b.RESERVER_ID \n" +
 				",b.TITLE \n" +
 				",p.NAME pubulisher_name \n" +
-				",r.RETURN_DEADLINE \n" +
-				",b.ID as bookId \n" +
 				",rt.RETURNED_AT \n" +
 				",LISTAGG(ah.NAME, '/') WITHIN GROUP (order by ah.NAME) AS authors_name \n" +
 				",LISTAGG(g.NAME, '/') WITHIN GROUP (order by g.NAME) AS genres_name \n" +
-				" \n" +
 				" \n" +
 				"from \n" +
 				"BOOKS b \n" +
@@ -99,21 +106,19 @@ public class RentedDAO extends DAOBase {
 				" \n" +
 				"where 1=1 \n" +
 				"and a.NAME = '"+name+"' \n" +
-				"and a.ID = r.ACCOUNT_ID \n" +
-				"and b.ID = r.BOOK_ID \n" +
+				"and b.RESERVER_ID = a.ID \n" +
 				"and b.PUBLISHER_ID = p.ID \n" +
+				"and b.ID = r.BOOK_ID(+) \n" +
 				"and r.ID = rt.RENTAL_ID(+) \n" +
-				"and rt.RENTAL_ID is null \n" +
-				"and b.ID = ba.BOOK_ID \n" +
-				"and ba.AUTHOR_ID = ah.ID \n" +
-				"and b.ID = bg.BOOK_ID \n" +
-				"and bg.GENRE_ID = g.ID \n" +
+				"and ba.BOOK_ID = b.ID \n" +
+				"and ah.ID = ba.AUTHOR_ID \n" +
+				"and bg.BOOK_ID = b.ID \n" +
+				"and g.ID = bg.GENRE_ID \n" +
 				" \n" +
-				"GROUP BY \n" +
-				"r.ID,b.TITLE,p.NAME,r.RETURN_DEADLINE,b.ID,rt.RETURNED_AT \n" +
-				" \n" +
+				"group by \n" +
+				"b.ID,b.RESERVER_ID,b.TITLE,p.NAME,rt.RETURNED_AT \n" +
 				"order by \n" +
-				"r.ID \n";
+				"b.ID \n";
 		return sql;
 	}
 }
