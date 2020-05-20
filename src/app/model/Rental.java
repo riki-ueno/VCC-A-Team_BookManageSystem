@@ -10,6 +10,7 @@ public class Rental {
 	private Book book;
 	private Date returnDeadline;
 	private Date insertedAt;
+	private Return returnObj;
 
 	public int getId() {
 		return id;
@@ -65,5 +66,13 @@ public class Rental {
 
 	public void setInsertedAt(Date insertedAt) {
 		this.insertedAt = insertedAt;
+	}
+
+	public Return getReturnObj() {
+		return returnObj;
+	}
+
+	public void setReturnObj(Return returnObj) {
+		this.returnObj = returnObj;
 	}
 }
