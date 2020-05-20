@@ -31,6 +31,7 @@ public class RentedDAO extends DAOBase {
 				Book book = new Book();
 				Publisher publisher = new Publisher();
 				book.setTitle(rs1.getString("TITLE"));
+				book.setId(rs1.getInt("BOOKID"));
 				publisher.setName(rs1.getString("PUBULISHER_NAME"));
 				book.setPublisher(publisher);
 				rental.setBook(book);
@@ -140,6 +141,7 @@ public class RentedDAO extends DAOBase {
 				",b.TITLE  \n" +
 				",p.NAME pubulisher_name \n" +
 				",r.RETURN_DEADLINE \n" +
+				",b.ID as bookId \n" +
 				" \n" +
 				"from \n" +
 				"BOOKS b \n" +

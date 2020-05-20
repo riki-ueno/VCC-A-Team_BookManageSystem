@@ -50,7 +50,7 @@ var getrentalInfo = function(){
 						tableElemnt += '<tr>';
 						tableElemnt += '<td>'+index+'</td>';
 						tableElemnt += '<td id=genre'+index+'></td>';
-						tableElemnt += '<td>'+rental.book.title+'</td>';
+						tableElemnt += '<td><a href="./bookDetail.html?bookId='+rental.book.id+'">'+rental.book.title+'</a></td>';
 						tableElemnt += '<td>'+rental.book.publisher.name+'</td>';
 						tableElemnt += '<td id=author'+index+'></td>';
 						tableElemnt += '<td>'+rental.returnDeadline+'</td>';
@@ -131,7 +131,7 @@ var getGenreInfo = function(){
 }
 var returnBook = function(){
 	var inputRentalId = document.activeElement.value;
-	var url = './rentalConfirm.html?q='+inputRentalId;
+	var url = './rentalConfirm.html?rentalId='+inputRentalId;
 	location.href=url;
 }
 $(document).ready(function () {
