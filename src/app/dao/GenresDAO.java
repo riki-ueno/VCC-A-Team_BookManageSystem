@@ -57,8 +57,9 @@ public class GenresDAO extends DAOBase {
 	}
 
 	public int convertGenreNameToGenreId(String genreName) {
-		String sql = "SELECT g.id FROM genres g WHERE g.name = '" + genreName + "'";
+		String sql = "SELECT g.id FROM genres g WHERE g.name = ?";
 		try (PreparedStatement pstmt = createPreparedStatement(sql);) {
+			pstmt.setString(1, genreName);
 			ResultSet rs = pstmt.executeQuery();
 
 			if (rs.next()) {
