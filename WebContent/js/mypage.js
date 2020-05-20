@@ -136,7 +136,7 @@ var getReservationInfo = function(){
 	$.ajax({
 		type:'GET',
 		dataType:'json',
-		url:'/BookManageSystem/api/auth/ReservationServlet',
+		url:'/BookManageSystem/api/auth/reservation',
 		data : requestQuery,
 		success : function(json) {
 			console.log('返却値', json);
@@ -168,13 +168,13 @@ var getReservationInfo = function(){
 				$('#reservationTable').html(tableElemnt);
 				$('.cancel').click(cancel);
 				$('.rental').click(rental);
-			}else if(json.length == 0){
-				$('reservationContainer').html('予約している本はありません。');
+			}else{
+				$('#reservationContainer').html('予約している本はありません。');
 			}
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
 			alert('データベースの接続に失敗しました');
-			$('reservationContainer').html('予約している本はありません。');
+			$('#reservationContainer').html('予約している本はありません。');
 			console.log(errorThrown)
 		}
 	});
@@ -187,7 +187,7 @@ var getReservationAuthorInfo = function(){
 	$.ajax({
 		type:'GET',
 		dataType:'json',
-		url:'/BookManageSystem/api/auth/ReservationServlet',
+		url:'/BookManageSystem/api/auth/reservation',
 		data : requestQuery,
 		success : function(json) {
 			console.log('返却値', json);
@@ -214,7 +214,7 @@ var getReservationGenreInfo = function(){
 	$.ajax({
 		type:'GET',
 		dataType:'json',
-		url:'/BookManageSystem/api/auth/ReservationServlet',
+		url:'/BookManageSystem/api/auth/reservation',
 		data : requestQuery,
 		success : function(json) {
 			console.log('返却値', json);
@@ -241,7 +241,7 @@ var cancel = function(){
 	$.ajax({
 		type : 'POST',
 		dataType:'json',
-		url : '/BookManageSystem/api/auth/ReservationServlet',
+		url : '/BookManageSystem/api/auth/reservation',
 		data : requestQuery,
 		success : function(json) {
 			console.log('返却値', json);
@@ -280,7 +280,7 @@ var rental = function(){
 	$.ajax({
 		type : 'POST',
 		dataType:'json',
-		url : '/BookManageSystem/api/auth/ReservationServlet',
+		url : '/BookManageSystem/api/auth/reservation',
 		data : cancelQuery,
 		success : function(json) {
 		},
@@ -290,12 +290,14 @@ var rental = function(){
 	});
 }
 $(document).ready(function () {
+    getauthorInfo();
+    getGenreInfo();
+    getReservationAuthorInfo();
+    getReservationGenreInfo();
+});
+$(window).on('load', function() {
     'use strict';
     LoginCertificate();
     getrentalInfo();
-    getauthorInfo();
-    getGenreInfo();
     getReservationInfo();
-    getReservationGenreInfo();
-    getReservationAuthorInfo();
 });

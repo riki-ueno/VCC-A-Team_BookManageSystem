@@ -17,7 +17,7 @@ import app.dao.ReservationDAO;
 /**
  * Servlet implementation class ReservationServlet
  */
-@WebServlet("/api/auth/ReservationServlet")
+@WebServlet("/api/auth/reservation")
 public class ReservationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
