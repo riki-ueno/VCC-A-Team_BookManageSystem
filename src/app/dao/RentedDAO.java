@@ -78,7 +78,7 @@ public class RentedDAO extends DAOBase {
 		}
 	}
 	private String creatGenreSql(String name) {
-		String sql = "select  \n" +
+		String sql ="select  \n" +
 				"r.ID \n" +
 				",b.TITLE  \n" +
 				",LISTAGG(g.NAME, '/') WITHIN GROUP (order by g.NAME) AS genres_name \n" +
@@ -89,6 +89,7 @@ public class RentedDAO extends DAOBase {
 				",RENTALS r \n" +
 				",GENRES g \n" +
 				",BOOKS_GENRES bg \n" +
+				",RETURNS rt \n" +
 				" \n" +
 				"where 1=1 \n" +
 				"and a.NAME = '"+name+"' \n" +
@@ -96,19 +97,21 @@ public class RentedDAO extends DAOBase {
 				"and b.ID = r.BOOK_ID \n" +
 				"and b.ID = bg.BOOK_ID \n" +
 				"and bg.GENRE_ID = g.ID \n" +
+				"and r.ID = rt.RENTAL_ID(+) \n" +
+				"and rt.RENTAL_ID is null \n" +
 				" \n" +
 				"group by \n" +
 				"r.ID,b.TITLE \n" +
 				" \n" +
 				"order by \n" +
-				"r.ID \n";
+				"r.ID \n" +
+				" \n";
 		return sql;
 	}
 
 	private String creatAuthorSql(String name) {
-		String sql = "select  \n" +
+		String sql = "select \n" +
 				"r.ID \n" +
-				",b.TITLE  \n" +
 				",LISTAGG(ah.NAME, '/') WITHIN GROUP (order by ah.NAME) AS authors_name \n" +
 				" \n" +
 				"from \n" +
@@ -117,8 +120,7 @@ public class RentedDAO extends DAOBase {
 				",BOOKS_AUTHORS ba \n" +
 				",AUTHORS ah \n" +
 				",RENTALS r \n" +
-				" \n" +
-				" \n" +
+				",RETURNS rt \n" +
 				" \n" +
 				"where 1=1 \n" +
 				"and a.NAME = '"+name+"' \n" +
@@ -126,9 +128,10 @@ public class RentedDAO extends DAOBase {
 				"and b.ID = r.BOOK_ID \n" +
 				"and b.ID = ba.BOOK_ID \n" +
 				"and ba.AUTHOR_ID = ah.ID \n" +
+				"and r.ID = rt.RENTAL_ID(+) \n" +
+				"and rt.RENTAL_ID is null \n" +
 				" \n" +
-				" \n" +
-				"GROUP BY  \n" +
+				"GROUP BY \n" +
 				"r.ID,b.TITLE \n" +
 				"order by \n" +
 				"r.ID \n";
@@ -136,25 +139,28 @@ public class RentedDAO extends DAOBase {
 	}
 
 	private String creatRentalSql(String name) {
-		String sql = "select  \n" +
+		String sql = "select \n" +
 				"r.ID \n" +
-				",b.TITLE  \n" +
+				",b.TITLE \n" +
 				",p.NAME pubulisher_name \n" +
 				",r.RETURN_DEADLINE \n" +
 				",b.ID as bookId \n" +
+				",rt.RETURNED_AT \n" +
 				" \n" +
 				"from \n" +
 				"BOOKS b \n" +
 				",ACCOUNTS a \n" +
 				",PUBLISHERS p \n" +
 				",RENTALS r \n" +
-				" \n" +
+				",RETURNS rt \n" +
 				" \n" +
 				"where 1=1 \n" +
 				"and a.NAME = '"+name+"' \n" +
 				"and a.ID = r.ACCOUNT_ID \n" +
 				"and b.ID = r.BOOK_ID \n" +
 				"and b.PUBLISHER_ID = p.ID \n" +
+				"and r.ID = rt.RENTAL_ID(+) \n" +
+				"and rt.RENTAL_ID is null \n" +
 				" \n" +
 				" \n" +
 				"order by \n" +
