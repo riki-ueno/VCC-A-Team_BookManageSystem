@@ -2,53 +2,78 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="css/uikit.min.css" />
 <script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
-<!-- <script type="text/javascript" src="js/LoginCertification.js"></script> -->
+<script src="js/uikit.min.js"></script>
+<script src="js/uikit-icons.min.js"></script>
 <script type="text/javascript" src="js/regist.js"></script>
 <title>書籍登録画面</title>
 </head>
 <body>
-<div class="title">
-<h1>書籍登録</h1>
-</div>
-<div class="form">
-<label>タイトル</label>
-<div id="title_form">
-<input type="text" id="book_title" />
-</div>
-<label>著者</label>
-<div id="author_name_forms">
-<input type="text" class="author_name" id="author_name_1" list="author_names_1" >
-<datalist id="author_names_1"></datalist>
-</div>
-<div id="add_author_name_button">
-<button id="add_author_name_form">＋</button>
-</div>
-<label>出版社</label>
-<div id="publisher_name_form">
-<input type="text" class="publisher_name" id="publisher_name" list="publisher_names" >
-<datalist id="publisher_names"></datalist>
-</div>
-<label>ジャンル</label>
-<div id="genre_name_forms">
-<input type="text" class="genre_name" id="genre_name_1" list="genre_names_1" >
-<datalist id="genre_names_1"></datalist>
-</div>
-<div id="add_genre_name_button">
-<button id="add_genre_name_form">＋</button>
-</div>
-<label>購入者</label>
-<div id="purchaser_name_form">
-<input type="text" id="purchaser_name" >
-</div>
-<label>購入日</label>
-<div id="purchased_at_form">
-<input type="date" id="purchased_at" >
-</div>
-<input type="button" id="regist" value="登録">
-<input type="button" id="regist_continue" value="続けて登録">
-<button id="set_test_value_button">テスト用値</button>
-<button id="date_value_test_button">日付確認</button>
-</div>
+	<header>
+		<nav class="uk-navbar-container" uk-navbar style="background: #CCFFCC;">
+			<div class="uk-navbar-left">
+				<a class="uk-logo" href="#">Logo</a>
+			</div>
+			<div class="uk-navbar-right">
+				<ul class="uk-navbar-nav">
+					<li><a href="#">書籍登録</a></li>
+					<li><a href="/BookManageSystem/search.html">書籍検索</a></li>
+					<li><a href="#">名前を表示</a>
+						<div class="uk-navbar-dropdown">
+							<ul class="uk-nav uk-navbar-dropdown-nav">
+								<li><a href="#">マイページ</a></li>
+								<li><a href="/BookManageSystem/passwordChange.html">パスワード変更</a></li>
+								<li><a href="#">ログアウト</a></li>
+							</ul>
+						</div></li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+	<div class="uk-container uk-container-small">
+		<div class="title">
+			<h1>書籍登録</h1>
+		</div>
+		<div class="form">
+			<label>タイトル</label>
+			<div id="title_form">
+				<input type="text" id="book_title" />
+			</div>
+			<label>著者</label>
+			<div id="author_name_forms">
+				<input type="text" class="author_name" id="author_name_1" list="author_names_1">
+				<datalist id="author_names_1"></datalist>
+			</div>
+			<div id="add_author_name_button">
+				<button id="add_author_name_form">＋</button>
+			</div>
+			<label>出版社</label>
+			<div id="publisher_name_form">
+				<input type="text" class="publisher_name" id="publisher_name" list="publisher_names">
+				<datalist id="publisher_names"></datalist>
+			</div>
+			<label>ジャンル</label>
+			<div id="genre_name_forms">
+				<input type="text" class="genre_name" id="genre_name_1" list="genre_names_1">
+				<datalist id="genre_names_1"></datalist>
+			</div>
+			<div id="add_genre_name_button">
+				<button id="add_genre_name_form">＋</button>
+			</div>
+			<label>購入者</label>
+			<div id="purchaser_name_form">
+				<input type="text" id="purchaser_name">
+			</div>
+			<label>購入日</label>
+			<div id="purchased_at_form">
+				<input type="date" id="purchased_at">
+			</div>
+			<input type="button" id="regist" value="登録"> <input type="button" id="regist_continue"
+				value="続けて登録">
+			<button id="set_test_value_button">テスト用値</button>
+			<button id="date_value_test_button">日付確認</button>
+		</div>
+	</div>
 </body>
 </html>
