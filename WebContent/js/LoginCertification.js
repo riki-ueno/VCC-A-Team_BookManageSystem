@@ -13,7 +13,7 @@ var LoginCertificate = function(){
 			}
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
-			alert('データベースへの更新に失敗しました。');
+			alert('ログイン情報の取得に失敗しました。');
 			console.log(errorThrown)
 		}
 	});
