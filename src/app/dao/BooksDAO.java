@@ -12,28 +12,52 @@ import app.model.Publisher;
 import app.model.Rental;
 import app.model.Return;
 
-public class BooksDAO extends DAOBase{
+import app.model.Book;
+
+public class BooksDAO extends DAOBase {
 	public BooksDAO() {
 		super();
 	}
 
+	public boolean create(Book book) {
+		String sql = "INSERT INTO books (TITLE, PUBLISHER_ID, PURCHASED_AT, PURCHASER_NAME,	REGISTER_ID) VALUES(?,?,?,?,?)";
+		try (PreparedStatement pstmt = createPreparedStatement(sql);) {
+
+			pstmt.setString(1, book.getTitle());
+			pstmt.setInt(2, book.getPublisherId());
+			pstmt.setDate(3, book.getPurchasedAt());
+			System.out.println(book.getPurchasedAt());
+			pstmt.setString(4, book.getPurchaserName());
+			pstmt.setInt(5, book.getRegisterId());
+			int count = pstmt.executeUpdate();
+
+			return count == 1;
+		} catch (SQLException e) {
+			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
+		}
+	}
+
+	public int convertTitleToBookId(String title) {
+		int bookId = 0;
+		String sql = "SELECT id FROM books WHERE title = ?";
+		try (PreparedStatement pstmt = createPreparedStatement(sql);) {
+			pstmt.setString(1, title);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				bookId = rs.getInt(1);
+			}
+			return bookId;
+		} catch (SQLException e) {
+			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
+		}
+	}
+
 	public boolean isAvailableForRental(int bookId, int accountId) {
-		String sql1 =
-				"select * " +
-				"from books " +
-						"right join rentals " +
-								"on BOOKS.ID = RENTALS.BOOK_ID " +
-						"left join returns " +
-								"on rentals.id = returns.RENTAL_ID " +
-				"where books.id = ? " +
-				  "and returns.RENTAL_ID is null " +
-				"order by rentals.id desc";
-		String sql2 =
-				"select * from books where books.id = ? and (books.RESERVER_ID is null or books.RESERVER_ID = ?)";
-		try (
-				PreparedStatement pstmt1 = createPreparedStatement(sql1);
-				PreparedStatement pstmt2 = createPreparedStatement(sql2);
-		) {
+		String sql1 = "select * " + "from books " + "right join rentals " + "on BOOKS.ID = RENTALS.BOOK_ID " + "left join returns "
+				+ "on rentals.id = returns.RENTAL_ID " + "where books.id = ? " + "and returns.RENTAL_ID is null " + "order by rentals.id desc";
+		String sql2 = "select * from books where books.id = ? and (books.RESERVER_ID is null or books.RESERVER_ID = ?)";
+		try (PreparedStatement pstmt1 = createPreparedStatement(sql1); PreparedStatement pstmt2 = createPreparedStatement(sql2);) {
 
 			pstmt1.setInt(1, bookId);
 
