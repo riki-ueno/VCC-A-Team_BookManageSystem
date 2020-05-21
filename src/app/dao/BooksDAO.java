@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import app.model.Author;
 import app.model.Book;
+import app.model.Genre;
 import app.model.Publisher;
 import app.model.Rental;
 import app.model.Return;
@@ -192,4 +194,98 @@ public class BooksDAO extends DAOBase {
 			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
 		}
 	}
+
+	public Book get(int bookId) {
+		String sql =
+				"select BOOKS.ID, " +
+				"       BOOKS.TITLE, " +
+				"       BOOKS.PURCHASER_NAME, " +
+				"       BOOKS.PURCHASED_AT, " +
+				"       PUBLISHERS.NAME PUBLISHER_NAME, " +
+				"       author_name_table.author_names, " +
+				"       genre_name_table.genre_names " +
+				"from BOOKS" +
+				"         LEFT JOIN (select BOOKS.ID                                                        books_id, " +
+				"                           LISTAGG(AUTHORS.NAME, '/') within group (order by AUTHORS.NAME) author_names " +
+				"                    from BOOKS " +
+				"                             left join BOOKS_AUTHORS BA on BOOKS.ID = BA.BOOK_ID " +
+				"                             left join AUTHORS on BA.AUTHOR_ID = AUTHORS.ID " +
+				"                    group by BOOKS.ID) author_name_table " +
+				"                   on author_name_table.books_id = BOOKS.ID " +
+				"         LEFT JOIN (select BOOKS.ID books_id, LISTAGG(GENRES.NAME, '/') within group (order by GENRES.NAME) genre_names " +
+				"                    from BOOKS " +
+				"                             left join BOOKS_GENRES BG on BOOKS.ID = BG.BOOK_ID " +
+				"                             left join GENRES on BG.GENRE_ID = GENRES.ID " +
+				"                    group by BOOKS.ID) genre_name_table on genre_name_table.books_id = BOOKS.ID " +
+				"         LEFT JOIN PUBLISHERS on BOOKS.PUBLISHER_ID = PUBLISHERS.ID " +
+				"where BOOKS.ID = ? " +
+				"order by BOOKS.ID";
+
+		try (
+				PreparedStatement pstmt = createPreparedStatement(sql);
+		) {
+
+			pstmt.setInt(1, bookId);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			Book book = new Book();
+
+			if (rs.next()) {
+				book.setId(rs.getInt("id"));
+				book.setTitle(rs.getString("title"));
+				book.setPurchaserName(rs.getString("purchaser_name"));
+				book.setPurchasedAt(rs.getDate("purchased_at"));
+				Publisher publisher = new Publisher();
+				publisher.setName(rs.getString("publisher_name"));
+				book.setPublisher(publisher);
+				System.out.println(rs.getString("author_names"));
+				List<Author> authorList = new ArrayList<Author>();
+				for (String authorName : rs.getString("author_names").split("/")) {
+					Author author = new Author();
+					author.setName(authorName);
+					authorList.add(author);
+				}
+				book.setAuthors(authorList);
+				List<Genre> genreList = new ArrayList<Genre>();
+				for (String genreName : rs.getString("genre_names").split("/")) {
+					Genre genre = new Genre();
+					genre.setName(genreName);
+					genreList.add(genre);
+				}
+				book.setGenres(genreList);
+			}
+
+			return book;
+
+		} catch (SQLException e) {
+			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
+		}
+	}
+
+	public boolean update(Book book) {
+		String sql =
+				"UPDATE books "
+				+ "SET title = ?, publisher_id = ?, purchaser_name = ?, purchased_at = ?, updater_id = ? "
+				+ "where id = ?";
+
+		try (
+				PreparedStatement pstmt = createPreparedStatement(sql);
+		) {
+			pstmt.setString(1, book.getTitle());
+			pstmt.setInt(2, book.getPublisherId());
+			pstmt.setString(3, book.getPurchaserName());
+			pstmt.setDate(4, book.getPurchasedAt());
+			pstmt.setInt(5, book.getUpdaterId());
+			pstmt.setInt(6, book.getId());
+
+			int rsCount = pstmt.executeUpdate();
+
+			return rsCount == 1;
+
+		} catch (SQLException e) {
+			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
+		}
+	}
+
 }
