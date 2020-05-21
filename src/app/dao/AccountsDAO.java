@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import app.model.Account;
 
 public class AccountsDAO extends DAOBase{
@@ -76,5 +78,49 @@ public class AccountsDAO extends DAOBase{
 		} catch (SQLException e) {
 			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
 		}
+	}
+
+	public Account getByMailAddress(String mailAddress) {
+		String sql =
+				"select * from accounts where mail_address = ?";
+
+		try (
+				PreparedStatement pstmt = createPreparedStatement(sql);
+		) {
+			pstmt.setString(1, mailAddress);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			Account account = new Account();
+
+			if (rs.next()) {
+				account.setId(rs.getInt("id"));
+				account.setName(rs.getString("name"));
+			}
+
+			return account;
+		} catch (SQLException e) {
+			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
+		}
+	}
+
+	public boolean updateAccountPassword(String mailAddress, String password) {
+		String sql =
+				"UPDATE accounts SET hashed_password = ? where mail_address = ?";
+
+		try (
+				PreparedStatement pstmt = createPreparedStatement(sql);
+		) {
+			pstmt.setString(1, DigestUtils.sha256Hex(password));
+			pstmt.setString(2, mailAddress);
+
+			int rsCount = pstmt.executeUpdate();
+
+			return rsCount == 1;
+		} catch (SQLException e) {
+			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
+		}
+
+
 	}
 }
