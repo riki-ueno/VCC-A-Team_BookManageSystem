@@ -2,6 +2,26 @@
  * 
  */
 
+var LoginCertificate = function(){
+	$.ajax({
+		type : 'GET',
+		dataType:'json',
+		url : '/BookManageSystem/api/auth/loginCertification',
+		success : function(json) {
+			if(json.result === "true"){
+			}else{
+				alert('ログインしてください。');
+				location.href = "./login.html"
+			}
+		},
+		error:function(XMLHttpRequest, textStatus, errorThrown){
+			alert('データベースへの更新に失敗しました。');
+			console.log(errorThrown)
+		}
+	});
+}
+
+
 var authorNameFormCounter = 1;
 var authorNamesStr;
 var genreNameFormCounter = 1;
@@ -82,6 +102,7 @@ function test(){
 
 $(document).ready(function() {
 	'use strict';
+	LoginCertificate();
 	setAuthorNamesToDatalist();
 	setGenreNamesToDatalist();
 	$('#set_test_value_button').click(setTestValues);
