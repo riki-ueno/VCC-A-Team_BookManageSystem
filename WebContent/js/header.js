@@ -6,6 +6,10 @@ function initialize() {
 		success: function(json) {
 			console.log(json)
 			$("#account_name").text(json.account_name)
+			console.log(json.account_is_library_staff != "1")
+			if (json.account_is_library_staff != "1") {
+				$("#book_regist").remove()
+			}
 		}
 	})
 }

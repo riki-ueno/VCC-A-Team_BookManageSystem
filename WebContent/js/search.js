@@ -11,7 +11,6 @@ function loginCertification(){
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
 			alert('データベースへの更新に失敗しました。');
-			console.log(errorThrown)
 		}
 	});
 }
@@ -85,7 +84,6 @@ function submit() {
 			}
 		}
 
-	console.log(requestQuery)
 
 
 
@@ -95,11 +93,9 @@ function submit() {
 		data: requestQuery,
 		dataType: "json",
 		success: function(bookList) {
-			console.log(bookList)
 
 			let html = ""
 			bookList.forEach(function(book, index) {
-				console.log(book)
 				let status;
 				if (book.reserverId != 0) {
 					status = "予約中"
@@ -152,7 +148,6 @@ function submit() {
 }
 
 function rental(button) {
-	console.log("test")
 	const buttonElem = $(button)
 	const bookId = buttonElem.attr("book_id")
 	const bookTitle = buttonElem.parent().prev().prev().prev().prev().prev().text()
@@ -178,10 +173,8 @@ function rental(button) {
 }
 
 function reserve(button) {
-	console.log("test")
 	const buttonElem = $(button)
 	const bookId = buttonElem.attr("book_id")
-	console.log(buttonElem)
 
 //	$.ajax({
 //		type : 'GET',
