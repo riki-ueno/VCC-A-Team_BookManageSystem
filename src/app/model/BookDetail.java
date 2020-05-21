@@ -3,6 +3,7 @@ package app.model;
 import java.sql.Date;
 
 public class BookDetail {
+	private int bookId;
 	private String title;
 	private String publisherNmae;
 	private String authorsName;
@@ -53,6 +54,12 @@ public class BookDetail {
 	}
 	public void setRentedName(String rentedName) {
 		this.rentedName = rentedName;
+	}
+	public int getBookId() {
+		return bookId;
+	}
+	public void setBookId(int bookId) {
+		this.bookId = bookId;
 	}
 	public String getReserver() {
 		return reserver;
