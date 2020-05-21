@@ -2,8 +2,6 @@ package app.servlet.auth;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,17 +12,19 @@ import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import app.dao.ReservationDAO;
+
 /**
- * Servlet implementation class LoginCertificationServlet
+ * Servlet implementation class ReservationServlet
  */
-@WebServlet("/api/auth/loginCertification")
-public class LoginCertificationServlet extends HttpServlet {
+@WebServlet("/api/auth/reservation")
+public class ReservationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginCertificationServlet() {
+    public ReservationServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,27 +33,23 @@ public class LoginCertificationServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
+		ReservationDAO reservationDAO = new ReservationDAO();
 		HttpSession session = request.getSession(true);
-		String account_name = (String) session.getAttribute("account_name");
+		String name = (String) session.getAttribute("account_name");
 		PrintWriter pw = response.getWriter();
-		Map <String, String> responseData = new HashMap<>();
-		if(account_name != null) {
-			responseData.put("result", "true");
-			responseData.put("account_name", account_name);
-			responseData.put("account_is_library_staff", session.getAttribute("account_is_library_staff").toString());
-			pw.append(new ObjectMapper().writeValueAsString(responseData));
-		}else {
-			responseData.put("result", "false");
-			pw.append(new ObjectMapper().writeValueAsString(responseData));
-		}
+		pw.append(new ObjectMapper().writeValueAsString(reservationDAO.ReservationList(name)));
+
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		ReservationDAO reservationDAO = new ReservationDAO();
+		String bookId = request.getParameter("bookId");
+		reservationDAO.ReservationCancel(bookId);
+		PrintWriter pw = response.getWriter();
+		pw.append(new ObjectMapper().writeValueAsString("ok"));
 	}
 
 }
