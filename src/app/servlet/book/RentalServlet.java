@@ -8,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -29,8 +28,7 @@ public class RentalServlet extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(true);
-		int accountId = (int) session.getAttribute("account_id");
+		int accountId = (int) request.getSession(true).getAttribute("account_id");
 		int bookId = Integer.parseInt(request.getParameter("book[id]"));
 
 		boolean result = RentalService.call(bookId, accountId);

@@ -22,6 +22,7 @@ public class Book {
 	private List<Genre> genres;
 	private String genreNames;
 	private List<Rental> rentals;
+
 	public int getId() {
 		return id;
 	}
@@ -124,21 +125,27 @@ public class Book {
 	public void setGenres(List<Genre> genres) {
 		this.genres = genres;
 	}
+
 	public String getAuthorNames() {
 		return authorNames;
 	}
+
 	public void setAuthorNames(String authorNames) {
 		this.authorNames = authorNames;
 	}
+
 	public String getGenreNames() {
 		return genreNames;
 	}
+
 	public void setGenreNames(String genreNames) {
 		this.genreNames = genreNames;
 	}
+
 	public List<Rental> getRentals() {
 		return rentals;
 	}
+
 	public void setRentals(List<Rental> rentals) {
 		this.rentals = rentals;
 	}
