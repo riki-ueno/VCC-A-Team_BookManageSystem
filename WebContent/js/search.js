@@ -2,7 +2,7 @@ function loginCertification(){
 	$.ajax({
 		type : 'GET',
 		dataType:'json',
-		url : '/BookManageSystem/api/auth/status',
+		url : '/BookManageSystem/api/auth/loginCertification',
 		success : function(json) {
 			if(json.result !== "true"){
 				alert('ログインしてください')
