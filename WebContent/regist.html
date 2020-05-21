@@ -36,26 +36,26 @@
 			<h1>書籍登録</h1>
 		</div>
 		<div class="form">
-			<label>タイトル</label>
+			<label>タイトル(必須)</label>
 			<div id="title_form">
-				<input type="text" id="book_title" />
+				<input type="text" id="book_title" required/>
 			</div>
-			<label>著者</label>
+			<label>著者(必須)</label>
 			<div id="author_name_forms">
-				<input type="text" class="author_name" id="author_name_1" list="author_names_1">
+				<input type="text" class="author_name" id="author_name_1" list="author_names_1" required>
 				<datalist id="author_names_1"></datalist>
 			</div>
 			<div id="add_author_name_button">
 				<button id="add_author_name_form">＋</button>
 			</div>
-			<label>出版社</label>
+			<label>出版社(必須)</label>
 			<div id="publisher_name_form">
-				<input type="text" class="publisher_name" id="publisher_name" list="publisher_names">
+				<input type="text" class="publisher_name" id="publisher_name" list="publisher_names" required>
 				<datalist id="publisher_names"></datalist>
 			</div>
-			<label>ジャンル</label>
+			<label>ジャンル(必須)</label>
 			<div id="genre_name_forms">
-				<input type="text" class="genre_name" id="genre_name_1" list="genre_names_1">
+				<input type="text" class="genre_name" id="genre_name_1" list="genre_names_1"  required>
 				<datalist id="genre_names_1"></datalist>
 			</div>
 			<div id="add_genre_name_button">
@@ -65,14 +65,12 @@
 			<div id="purchaser_name_form">
 				<input type="text" id="purchaser_name">
 			</div>
-			<label>購入日</label>
+			<label>購入日(必須)</label>
 			<div id="purchased_at_form">
-				<input type="date" id="purchased_at">
+				<input type="date" id="purchased_at"  required>
 			</div>
 			<input type="button" id="regist" value="登録"> <input type="button" id="regist_continue"
 				value="続けて登録">
-			<button id="set_test_value_button">テスト用値</button>
-			<button id="date_value_test_button">日付確認</button>
 		</div>
 	</div>
 </body>
