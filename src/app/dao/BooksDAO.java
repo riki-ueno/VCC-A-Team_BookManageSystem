@@ -12,8 +12,6 @@ import app.model.Publisher;
 import app.model.Rental;
 import app.model.Return;
 
-import app.model.Book;
-
 public class BooksDAO extends DAOBase {
 	public BooksDAO() {
 		super();
@@ -54,10 +52,13 @@ public class BooksDAO extends DAOBase {
 	}
 
 	public boolean isAvailableForRental(int bookId, int accountId) {
-		String sql1 = "select * " + "from books " + "right join rentals " + "on BOOKS.ID = RENTALS.BOOK_ID " + "left join returns "
-				+ "on rentals.id = returns.RENTAL_ID " + "where books.id = ? " + "and returns.RENTAL_ID is null " + "order by rentals.id desc";
+		String sql1 = "select * " + "from books " + "right join rentals " + "on BOOKS.ID = RENTALS.BOOK_ID "
+				+ "left join returns "
+				+ "on rentals.id = returns.RENTAL_ID " + "where books.id = ? " + "and returns.RENTAL_ID is null "
+				+ "order by rentals.id desc";
 		String sql2 = "select * from books where books.id = ? and (books.RESERVER_ID is null or books.RESERVER_ID = ?)";
-		try (PreparedStatement pstmt1 = createPreparedStatement(sql1); PreparedStatement pstmt2 = createPreparedStatement(sql2);) {
+		try (PreparedStatement pstmt1 = createPreparedStatement(sql1);
+				PreparedStatement pstmt2 = createPreparedStatement(sql2);) {
 
 			pstmt1.setInt(1, bookId);
 
@@ -73,35 +74,35 @@ public class BooksDAO extends DAOBase {
 		}
 	}
 
-	public List<Book> all(HashMap<String,String> searchCondition, String selectCondition) {
-		String sql =
-				"select BOOKS.ID, " +
-						"BOOKS.TITLE, " +
-						"BOOKS.RESERVER_ID, " +
-						"PUBLISHERS.NAME PUBLISHER_NAME, " +
-						"author_name_table.author_names, " +
-						"genre_name_table.genre_names, " +
-						"main.RETURN_DEADLINE, " +
-						"RETURNS.RETURNED_AT " +
+	public List<Book> all(HashMap<String, String> searchCondition, String selectCondition) {
+		String sql = "select BOOKS.ID, " +
+				"BOOKS.TITLE, " +
+				"BOOKS.RESERVER_ID, " +
+				"PUBLISHERS.NAME PUBLISHER_NAME, " +
+				"author_name_table.author_names, " +
+				"genre_name_table.genre_names, " +
+				"main.RETURN_DEADLINE, " +
+				"RETURNS.RETURNED_AT " +
 				"from BOOKS " +
-					"LEFT JOIN ( " +
-					"select BOOKS.ID books_id, LISTAGG(AUTHORS.NAME, '/') within group (order by AUTHORS.NAME) author_names " +
-					"from BOOKS " +
-							"left join BOOKS_AUTHORS BA on BOOKS.ID = BA.BOOK_ID " +
-							"left join AUTHORS on BA.AUTHOR_ID = AUTHORS.ID " +
-					"group by BOOKS.ID " +
+				"LEFT JOIN ( " +
+				"select BOOKS.ID books_id, LISTAGG(AUTHORS.NAME, '/') within group (order by AUTHORS.NAME) author_names "
+				+
+				"from BOOKS " +
+				"left join BOOKS_AUTHORS BA on BOOKS.ID = BA.BOOK_ID " +
+				"left join AUTHORS on BA.AUTHOR_ID = AUTHORS.ID " +
+				"group by BOOKS.ID " +
 				") author_name_table on author_name_table.books_id = BOOKS.ID " +
-					"LEFT JOIN ( " +
-					"select BOOKS.ID books_id, LISTAGG(GENRES.NAME, '/') within group (order by GENRES.NAME) genre_names " +
-					"from BOOKS " +
-							"left join BOOKS_GENRES BG on BOOKS.ID = BG.BOOK_ID " +
-							"left join GENRES on BG.GENRE_ID = GENRES.ID " +
-					"group by BOOKS.ID " +
+				"LEFT JOIN ( " +
+				"select BOOKS.ID books_id, LISTAGG(GENRES.NAME, '/') within group (order by GENRES.NAME) genre_names " +
+				"from BOOKS " +
+				"left join BOOKS_GENRES BG on BOOKS.ID = BG.BOOK_ID " +
+				"left join GENRES on BG.GENRE_ID = GENRES.ID " +
+				"group by BOOKS.ID " +
 				") genre_name_table on genre_name_table.books_id = BOOKS.ID " +
-					"LEFT JOIN PUBLISHERS on BOOKS.PUBLISHER_ID = PUBLISHERS.ID " +
-					"LEFT JOIN RENTALS main on BOOKS.ID = main.BOOK_ID " +
-					"LEFT JOIN RENTALS sub on sub.BOOK_ID = main.BOOK_ID and sub.id > main.ID " +
-					"LEFT JOIN RETURNS on main.id = RETURNS.RENTAL_ID " +
+				"LEFT JOIN PUBLISHERS on BOOKS.PUBLISHER_ID = PUBLISHERS.ID " +
+				"LEFT JOIN RENTALS main on BOOKS.ID = main.BOOK_ID " +
+				"LEFT JOIN RENTALS sub on sub.BOOK_ID = main.BOOK_ID and sub.id > main.ID " +
+				"LEFT JOIN RETURNS on main.id = RETURNS.RENTAL_ID " +
 				"where sub.ID is null";
 
 		String searchConditionQuery = String.join(" AND ", searchCondition.keySet());
@@ -114,8 +115,7 @@ public class BooksDAO extends DAOBase {
 		sql += (" AND " + searchConditionQuery + " order by BOOKS.ID");
 
 		try (
-				PreparedStatement pstmt = createPreparedStatement(sql);
-		) {
+				PreparedStatement pstmt = createPreparedStatement(sql);) {
 			int indexCount = 1;
 			for (String key : searchCondition.keySet()) {
 				pstmt.setString(indexCount, searchCondition.get(key));
@@ -128,7 +128,7 @@ public class BooksDAO extends DAOBase {
 
 			List<Book> bookList = new ArrayList<Book>();
 
-			while(rs.next()) {
+			while (rs.next()) {
 				Book book = new Book();
 				book.setId(rs.getInt("id"));
 				book.setTitle(rs.getString("title"));
@@ -150,6 +150,43 @@ public class BooksDAO extends DAOBase {
 			}
 
 			return bookList;
+
+		} catch (SQLException e) {
+			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
+		}
+	}
+
+	public boolean isAlreadyReserved(int bookId) {
+		String sql = "select * from books where id = ? and reserver_id is not null";
+
+		try (
+				PreparedStatement pstmt = createPreparedStatement(sql);
+		) {
+
+			pstmt.setInt(1, bookId);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			return rs.next();
+
+		} catch (SQLException e) {
+			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
+		}
+	}
+
+	public boolean reserve(int bookId, int accountId) {
+		String sql = "update books set reserver_id = ? where id = ?";
+
+		try (
+				PreparedStatement pstmt = createPreparedStatement(sql);
+		) {
+
+			pstmt.setInt(1, accountId);
+			pstmt.setInt(2, bookId);
+
+			int rsCount = pstmt.executeUpdate();
+
+			return rsCount == 1;
 
 		} catch (SQLException e) {
 			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
