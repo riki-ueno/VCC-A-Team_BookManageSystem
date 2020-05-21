@@ -6,6 +6,9 @@
 		<link rel="stylesheet" href="css/uikit.min.css" />
 		<script src="js/uikit.min.js"></script>
 		<script src="js/uikit-icons.min.js"></script>
+		<!-- ここに各ページに必要なjsを置く -->
+		<!-- <script src="js/sample.js"></script> -->
+		<script src="js/header.js"></script>
 	</head>
 	<body>
 		<header>
@@ -18,12 +21,12 @@
 						<li><a href="#">書籍登録</a></li>
 						<li><a href="/BookManageSystem/search.html">書籍検索</a></li>
 						<li>
-							<a href="#">名前を表示</a>
+							<a id="account_name" href="#"></a>
 							<div class="uk-navbar-dropdown">
 								<ul class="uk-nav uk-navbar-dropdown-nav">
-									<li><a href="#">マイページ</a></li>
+									<li><a href="/BookManageSystem/mypage.html">マイページ</a></li>
 									<li><a href="/BookManageSystem/passwordChange.html">パスワード変更</a></li>
-									<li><a href="#">ログアウト</a></li>
+									<li><a href="#" onclick="logout()">ログアウト</a></li>
 								</ul>
 							</div>
 						</li>
