@@ -115,10 +115,10 @@ function submit() {
 						button = ""
 						break
 					case "貸出中":
-						button = "<input class='uk-button uk-button-default uk-button-small' type='button' value='予約' />"
+						button = "<input class='uk-button uk-button-default uk-button-small' book_id='" + book.id + "' type='button' onclick='reserve(this)' value='予約' />"
 						break
 					case "貸出可":
-						button = "<input class='uk-button uk-button-default uk-button-small' type='button' value='借りる' />"
+						button = "<input class='uk-button uk-button-default uk-button-small' book_id='" + book.id + "' type='button' onclick='rental(this)' value='借りる' />"
 				}
 
 				let returnDeadline;
@@ -149,6 +149,53 @@ function submit() {
 			$("#book_list_table tbody").append(html);
 		}
 	})
+}
+
+function rental(button) {
+	console.log("test")
+	const buttonElem = $(button)
+	const bookId = buttonElem.attr("book_id")
+	const bookTitle = buttonElem.parent().prev().prev().prev().prev().prev().text()
+
+	if (confirm("レンタルする本の確認\nタイトル: " + bookTitle + "\nで間違いないですか？")) {
+		$.ajax({
+			type : 'POST',
+			url : '/BookManageSystem/api/book/rental',
+			dataType: "json",
+			data: {book: {id: bookId}},
+			success: function(result) {
+				if (result === true) {
+					let date = new Date()
+					date.setDate(date.getDate() + 14)
+					alert("レンタル処理が完了しました。\n返却期限は" + date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate()+ "です。")
+					submit()
+				} else {
+					alert("レンタル処理に失敗しました。時間を空けて再度行ってみてください。")
+				}
+			}
+		})
+	}
+}
+
+function reserve(button) {
+	console.log("test")
+	const buttonElem = $(button)
+	const bookId = buttonElem.attr("book_id")
+	console.log(buttonElem)
+
+//	$.ajax({
+//		type : 'GET',
+//		url : '/EmployeesInfoManageTool/api/book/reserve',
+//		dataType: "json",
+//		data: {book: {id: bookId}},
+//		success: function(result) {
+//			if (result === true) {
+//				alert("予約しました")
+//			} else {
+//				$("#message").html("削除に失敗しました")
+//			}
+//		}
+//	})
 }
 
 $(document).ready(function () {

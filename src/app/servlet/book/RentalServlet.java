@@ -16,7 +16,7 @@ import app.service.RentalService;
 /**
  * Servlet implementation class RentalServlet
  */
-@WebServlet("/RentalServlet")
+@WebServlet("/api/book/rental")
 public class RentalServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -28,7 +28,7 @@ public class RentalServlet extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int accountId = Integer.parseInt((String) request.getSession().getAttribute("account_id"));
+		int accountId = (int) request.getSession(true).getAttribute("account_id");
 		int bookId = Integer.parseInt(request.getParameter("book[id]"));
 
 		boolean result = RentalService.call(bookId, accountId);
