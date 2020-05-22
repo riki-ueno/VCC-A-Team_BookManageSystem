@@ -31,21 +31,14 @@ var getReturnBookInfo = function(){
 		url : '/BookManageSystem/api/auth/Return',
 		data : requestQuery,
 		success : function(json) {
-			console.log('返却値', json);
 			var tableElemnt = '';
-			tableElemnt +='<tr>';
-			tableElemnt +='<th>タイトル</th>';
-			tableElemnt +='<th>出版社</th>';
-			tableElemnt +='<th>著者</th>';
-			tableElemnt +='<th>返却期限</th>';
-			tableElemnt +='</tr>';
 			tableElemnt += '<tr>';
 			tableElemnt += '<td><a href="./bookDetail.html?bookId='+json.bookId+'">'+json.title+'</a></td>';
 			tableElemnt += '<td>'+json.publisherNmae+'</td>';
 			tableElemnt += '<td>'+json.authorsName+'</td>';
 			tableElemnt += '<td>'+json.returnDeadline+'</td>';
 			tableElemnt +='</tr>';
-			$('#table').html(tableElemnt);
+			$('table tbody').html(tableElemnt);
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
 			alert('返却書籍情報の取得に失敗しました。');
@@ -66,7 +59,7 @@ var confirm = function(){
 		success : function(json) {
 			console.log('返却値', json);
 			alert('返却を受理しました。');
-			location.href = "./mypage.html"
+			location.href = "/BookManageSystem/account/mypage.html"
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
 			alert('返却を受理出来ませんでした。再度返却処理をしてください。');

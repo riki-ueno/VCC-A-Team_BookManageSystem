@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 
 var LoginCertificate = function() {
@@ -11,7 +11,7 @@ var LoginCertificate = function() {
 			if (json.result === "true") {
 			} else {
 				alert('ログインしてください。');
-				location.href = "./login.html"
+				location.href = "/BookManageSystem/login.html"
 			}
 		},
 		error : function(XMLHttpRequest, textStatus, errorThrown) {
@@ -37,7 +37,7 @@ function setAuthorNamesToDatalist() {
 				var authorData = authorDatas[i];
 				authorNamesStr += '<option>' + authorData.name + '</option>';
 			}
-			$('#author_names_1').append(authorNamesStr);
+			$('#author_name_keywords').append(authorNamesStr);
 		},
 		error : function() {
 			alert('筆者一覧の取得に失敗しました。');
@@ -55,7 +55,7 @@ function setGenreNamesToDatalist() {
 				var genreData = genreDatas[i];
 				genreNamesStr += '<option>' + genreData.name + '</option>';
 			}
-			$('#genre_names_1').append(genreNamesStr);
+			$('#genre_name_keywords').append(genreNamesStr);
 		},
 		error : function() {
 			alert('ジャンル一覧の取得に失敗しました。');
@@ -73,7 +73,7 @@ function setPublisherNamesToDataList() {
 				var publisherData = publisherDatas[i];
 				publisherNamesStr += '<option>' + publisherData.name + '</option>';
 			}
-			$('#publisher_names').append(publisherNamesStr);
+			$('#publisher_name_keywords').append(publisherNamesStr);
 		},
 		error : function() {
 			alert('出版社一覧の取得に失敗しました。');
@@ -81,20 +81,45 @@ function setPublisherNamesToDataList() {
 	});
 }
 
-function addAuthorNameForm() {
-	authorNameFormCounter++;
-	$('#author_name_forms').append(
-			'<br><input type="text" class="author_name" id="author_name_' + authorNameFormCounter + '" list="author_names_' + authorNameFormCounter
-					+ '" required >' + '<datalist id="author_names_' + authorNameFormCounter + '"></datalist>');
-	$('#author_names_' + authorNameFormCounter).append(authorNamesStr);
+//function addAuthorNameForm() {
+//	authorNameFormCounter++;
+//	$('#author_name_forms').append(
+//			'<br><input type="text" class="author_name" id="author_name_' + authorNameFormCounter + '" list="author_names_' + authorNameFormCounter
+//					+ '" required >' + '<datalist id="author_names_' + authorNameFormCounter + '"></datalist>');
+//	$('#author_names_' + authorNameFormCounter).append(authorNamesStr);
+//}
+//
+//function addGenreNameForm() {
+//	genreNameFormCounter++;
+//	$('#genre_name_forms').append(
+//			'<br><input type="text" class="genre_name" id="genre_name_' + genreNameFormCounter + '" list="genre_names_' + genreNameFormCounter
+//					+ '" required >' + '<datalist id="genre_names_' + genreNameFormCounter + '"></datalist>');
+//	$('#genre_names_' + genreNameFormCounter).append(genreNamesStr);
+//}
+
+function addAuthorForm(span) {
+	$(span).before('<div class="uk-margin-small"><input class="uk-input uk-form-width-medium author_name" type="text" list="author_name_keywords"><span class="uk-icon-button uk-margin-left" uk-icon="close" onclick="removeForm(this)"></span></div>')
+	if ($(".author_name").length == 2) {
+		$(".author_name:first").after('<span class="uk-icon-button uk-margin-left" uk-icon="close" onclick="removeForm(this)"></span>')
+	}
 }
 
-function addGenreNameForm() {
-	genreNameFormCounter++;
-	$('#genre_name_forms').append(
-			'<br><input type="text" class="genre_name" id="genre_name_' + genreNameFormCounter + '" list="genre_names_' + genreNameFormCounter
-					+ '" required >' + '<datalist id="genre_names_' + genreNameFormCounter + '"></datalist>');
-	$('#genre_names_' + genreNameFormCounter).append(genreNamesStr);
+function addGenreForm(span) {
+	$(span).before('<div class="uk-margin-small"><input class="uk-input uk-form-width-medium genre_name" type="text" list="genre_name_keywords"><span class="uk-icon-button uk-margin-left" uk-icon="close" onclick="removeForm(this)"></span></div>')
+	if ($(".genre_name").length == 2) {
+		$(".genre_name:first").after('<span class="uk-icon-button uk-margin-left" uk-icon="close" onclick="removeForm(this)"></span>')
+	}
+}
+
+function removeForm(span) {
+	$(span).parent().remove()
+	if ($(".author_name").length == 1) {
+		$(".author_name:first").next().remove()
+	}
+
+	if ($(".genre_name").length == 1) {
+		$(".genre_name:first").next().remove()
+	}
 }
 
 function regist() {
@@ -133,7 +158,7 @@ function regist() {
 		success : function(bookId) {
 			alert('書籍の登録が完了しました。');
 			console.log(bookId);
-			location.href = './bookDetail.html/?bookId=' + bookId;
+			location.href = '/BookManageSystem/book/show.html/?bookId=' + bookId;
 		},
 		error : function() {
 			alert('登録できませんでした。入力情報を確認してください。');
@@ -190,8 +215,8 @@ $(document).ready(function() {
 	setAuthorNamesToDatalist();
 	setGenreNamesToDatalist();
 	setPublisherNamesToDataList();
-	$('#add_author_name_form').click(addAuthorNameForm);
-	$('#add_genre_name_form').click(addGenreNameForm);
+//	$('#add_author_name_form').click(addAuthorNameForm);
+//	$('#add_genre_name_form').click(addGenreNameForm);
 	$('#regist').click(regist);
 	$('#regist_continue').click(registContinue);
 });

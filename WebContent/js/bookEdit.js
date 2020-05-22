@@ -81,22 +81,41 @@ function bookInitialize() {
 				genresHtml += '<div class="uk-margin-small"><input class="uk-input uk-form-width-medium genre_name" type="text" list="genre_name_keywords" value="' + value.name + '"><span class="uk-icon-button uk-margin-left" uk-icon="close" onclick="removeForm(this)"></span></div>'
 			})
 			$("#genre_names").prepend(genresHtml)
-			$(".author_name:first").next().remove()
-			$(".genre_name:first").next().remove()
+
+			if ($(".author_name").length == 1) {
+				$(".author_name:first").next().remove()
+			}
+
+			if ($(".genre_name").length == 1) {
+				$(".genre_name:first").next().remove()
+			}
 		}
 	})
 }
 
 function addAuthorForm(span) {
 	$(span).before('<div class="uk-margin-small"><input class="uk-input uk-form-width-medium author_name" type="text" list="author_name_keywords"><span class="uk-icon-button uk-margin-left" uk-icon="close" onclick="removeForm(this)"></span></div>')
+	if ($(".author_name").length == 2) {
+		$(".author_name:first").after('<span class="uk-icon-button uk-margin-left" uk-icon="close" onclick="removeForm(this)"></span>')
+	}
 }
 
 function addGenreForm(span) {
 	$(span).before('<div class="uk-margin-small"><input class="uk-input uk-form-width-medium genre_name" type="text" list="genre_name_keywords"><span class="uk-icon-button uk-margin-left" uk-icon="close" onclick="removeForm(this)"></span></div>')
+	if ($(".genre_name").length == 2) {
+		$(".genre_name:first").after('<span class="uk-icon-button uk-margin-left" uk-icon="close" onclick="removeForm(this)"></span>')
+	}
 }
 
 function removeForm(span) {
 	$(span).parent().remove()
+	if ($(".author_name").length == 1) {
+		$(".author_name:first").next().remove()
+	}
+
+	if ($(".genre_name").length == 1) {
+		$(".genre_name:first").next().remove()
+	}
 }
 
 function submit() {
@@ -130,6 +149,12 @@ function submit() {
 		dataType: "json",
 		data: requestQuery,
 		success: function(result) {
+			if (result == true) {
+				alert("更新しました。")
+				location.href = "/BookManageSystem/book/show.html?bookId=" + bookId
+			} else {
+				alert("更新に失敗しました。")
+			}
 		}
 	})
 }

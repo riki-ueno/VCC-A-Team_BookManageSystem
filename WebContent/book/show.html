@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>書籍詳細ページ</title>
+<link rel="stylesheet" href="/BookManageSystem/css/uikit.min.css" />
+<style>
+	.uk-form-label {width: 60px !important;}
+	.uk-form-controls {margin-left: 75px !important}
+</style>
+<script src="/BookManageSystem/js/uikit.min.js"></script>
+<script src="/BookManageSystem/js/uikit-icons.min.js"></script>
+<script src="/BookManageSystem/js/jquery-3.5.1.min.js"></script>
+<script src="/BookManageSystem/js/bookDetail.js"></script>
+<script src="/BookManageSystem/js/header.js"></script>
+</head>
+<body>
+	<header>
+		<nav class="uk-navbar-container" uk-navbar style="background: #CCFFCC;">
+			<a class="uk-navbar-item uk-logo">図書管理システム</a>
+	   		<div class="uk-navbar-right">
+				<ul class="uk-navbar-nav">
+					<li id="book_regist"><a href="/BookManageSystem/book/regist.html">書籍登録</a></li>
+					<li><a href="/BookManageSystem/book/search.html">書籍検索</a></li>
+					<li>
+						<a id="account_name" href="#"></a>
+						<div class="uk-navbar-dropdown">
+							<ul class="uk-nav uk-navbar-dropdown-nav">
+								<li><a href="/BookManageSystem/account/mypage.html">マイページ</a></li>
+								<li><a href="/BookManageSystem/password/change.html">パスワード変更</a></li>
+								<li><a href="#" onclick="logout()">ログアウト</a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+	<article class="uk-article">
+		<section class="uk-section uk-container uk-container-xsmall">
+			<h3>書籍詳細</h3>
+			<div class="uk-container uk-container-xsmall">
+				<table class="uk-table uk-table-divider">
+					<tr>
+						<th>タイトル</th>
+						<td id="title"></td>
+					</tr>
+					<tr>
+						<th>著者</th>
+						<td id="author"></td>
+					</tr>
+					<tr>
+						<th>出版社</th>
+						<td id="publisher"></td>
+					</tr>
+					<tr>
+						<th>ジャンル</th>
+						<td id="genre"></td>
+					</tr>
+					<tr>
+						<th>貸出状況</th>
+						<td id="status"></td>
+					</tr>
+					<tr>
+						<th>借りている人</th>
+						<td id="rentedName"></td>
+					</tr>
+					<tr>
+						<th>返却期限</th>
+						<td id="deadlineAt"></td>
+					</tr>
+					<tr>
+						<th>予約している人</th>
+						<td id="reserver"></td>
+					</tr>
+					<tr>
+						<th>最後に借りた人</th>
+						<td id="lastRentedName"></td>
+					</tr>
+					<tr>
+						<th>購入者</th>
+						<td id="purchaserName"></td>
+					</tr>
+					<tr>
+						<th>購入日</th>
+						<td id="purchasedAt"></td>
+					</tr>
+					<tr>
+						<th>登録者</th>
+						<td id="rigistrantName"></td>
+					</tr>
+					<tr>
+						<th>登録日</th>
+						<td id="regisitedAt"></td>
+					</tr>
+					<tr>
+						<th>更新者</th>
+						<td id="updaterName"></td>
+					</tr>
+					<tr>
+						<th>更新日</th>
+						<td id="updatedAt"></td>
+					</tr>
+				</table>
+				<div id=buttonsContainer>
+					<button id=back class="uk-button" type="button">戻る</button>
+					<button id=edit class="uk-button" type="button">編集</button>
+				</div>
+			</div>
+		</section>
+	</article>
+</body>
+</html>

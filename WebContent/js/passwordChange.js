@@ -2,8 +2,8 @@
  *
  */
 var changepassword = function(){
-	var inputPassword = $('#password').val();
-	var inputRepassword = $('#rePassword').val();
+	var inputPassword = $('#account_password').val();
+	var inputRepassword = $('#account_password_confirmation').val();
 	if(inputPassword === inputRepassword){
 		var requestQuery = {
 				password : inputPassword,
@@ -37,10 +37,9 @@ var LoginCertificate = function(){
 		dataType:'json',
 		url : '/BookManageSystem/api/auth/loginCertification',
 		success : function(json) {
-			if(json.result === "true"){
-			}else{
-				alert('ログインしてください。')
-				location.href = "./login.html"
+			if(json.result === "false"){
+				alert('ログインしてください。');
+				location.href="/BookManageSystem/login.html"
 			}
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){

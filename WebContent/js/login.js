@@ -1,5 +1,6 @@
 function submit() {
 	'use strict'
+
 	const mailAddress = $("#account_mail_address").val();
 	const password = $("#account_password").val();
 
@@ -13,7 +14,7 @@ function submit() {
         success: function(result) {
             if (result !== false) {
             	alert("ログインしました")
-            	location.href = "./search.html"
+            	location.href = "/BookManageSystem/book/search.html"
             } else {
             	alert("ログインに失敗しました")
             }

@@ -57,7 +57,7 @@ var edit = function(){
 	var parameter  = location.search;
 	parameter = decodeURIComponent( parameter );
 	parameter = parameter.split('=')[1];
-	location.href = "./bookEdit.html?bookId="+parameter;
+	location.href = "/BookManageSystem/book/edit.html?bookId="+parameter;
 }
 var back = function(){
 	location.href = "javascript:history.back();"

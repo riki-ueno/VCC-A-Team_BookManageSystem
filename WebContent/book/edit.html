@@ -2,32 +2,30 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Insert title here</title>
-		<link rel="stylesheet" href="css/uikit.min.css" />
-		<script src="js/uikit.min.js"></script>
-		<script src="js/uikit-icons.min.js"></script>
+		<title>書籍編集</title>
+		<link rel="stylesheet" href="/BookManageSystem/css/uikit.min.css" />
+		<script src="/BookManageSystem/js/uikit.min.js"></script>
+		<script src="/BookManageSystem/js/uikit-icons.min.js"></script>
 		<!-- ここに各ページに必要なjsを置く -->
 		<!-- <script src="js/sample.js"></script> -->
-		<script src="js/jquery-3.5.1.min.js"></script>
-		<script src="js/bookEdit.js"></script>
-		<script src="js/header.js"></script>
+		<script src="/BookManageSystem/js/jquery-3.5.1.min.js"></script>
+		<script src="/BookManageSystem/js/bookEdit.js"></script>
+		<script src="/BookManageSystem/js/header.js"></script>
 	</head>
 	<body>
 		<header>
 			<nav class="uk-navbar-container" uk-navbar style="background: #CCFFCC;">
-				<div class="uk-navbar-left">
-					<a class="uk-logo" href="#">Logo</a>
-				</div>
+				<a class="uk-navbar-item uk-logo">図書管理システム</a>
 		   		<div class="uk-navbar-right">
-					<ul id="link_collection" class="uk-navbar-nav">
-						<li><a href="#">書籍登録</a></li>
-						<li><a href="/BookManageSystem/search.html">書籍検索</a></li>
+					<ul class="uk-navbar-nav">
+						<li id="book_regist"><a href="/BookManageSystem/book/regist.html">書籍登録</a></li>
+						<li><a href="/BookManageSystem/book/search.html">書籍検索</a></li>
 						<li>
 							<a id="account_name" href="#"></a>
 							<div class="uk-navbar-dropdown">
 								<ul class="uk-nav uk-navbar-dropdown-nav">
-									<li><a href="/BookManageSystem/mypage.html">マイページ</a></li>
-									<li><a href="/BookManageSystem/passwordChange.html">パスワード変更</a></li>
+									<li><a href="/BookManageSystem/account/mypage.html">マイページ</a></li>
+									<li><a href="/BookManageSystem/password/change.html">パスワード変更</a></li>
 									<li><a href="#" onclick="logout()">ログアウト</a></li>
 								</ul>
 							</div>
@@ -86,7 +84,8 @@
 
 				<div class="uk-margin">
 					<div class="uk-form-conrtols">
-						<input type="button" class="uk-button uk-button-primary" id="submit" value="更新" />
+						<button type="button" class="uk-button" onclick="location.href='javascript:history.back()'">戻る</button>
+						<button type="button" class="uk-button" id="submit">更新</button>
 					</div>
 				</div>
 			</form>

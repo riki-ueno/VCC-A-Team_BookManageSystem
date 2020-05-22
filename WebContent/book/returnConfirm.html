@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>返却確認ページ</title>
+<link rel="stylesheet" href="/BookManageSystem/css/uikit.min.css" />
+<script src="/BookManageSystem/js/uikit.min.js"></script>
+<script src="/BookManageSystem/js/uikit-icons.min.js"></script>
+<script src="/BookManageSystem/js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="/BookManageSystem/js/returnConfirm.js"></script>
+<script src="/BookManageSystem/js/header.js"></script>
+</head>
+<body>
+	<header>
+		<nav class="uk-navbar-container" uk-navbar style="background: #CCFFCC;">
+			<a class="uk-navbar-item uk-logo">図書管理システム</a>
+	   		<div class="uk-navbar-right">
+				<ul class="uk-navbar-nav">
+					<li id="book_regist"><a href="/BookManageSystem/book/regist.html">書籍登録</a></li>
+					<li><a href="/BookManageSystem/book/search.html">書籍検索</a></li>
+					<li>
+						<a id="account_name" href="#"></a>
+						<div class="uk-navbar-dropdown">
+							<ul class="uk-nav uk-navbar-dropdown-nav">
+								<li><a href="/BookManageSystem/account/mypage.html">マイページ</a></li>
+								<li><a href="/BookManageSystem/password/change.html">パスワード変更</a></li>
+								<li><a href="#" onclick="logout()">ログアウト</a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</nav>
+	</header>
+	<article class="uk-article">
+		<section class="uk-section uk-container uk-container-xsmall">
+			<table class="uk-table">
+				<thead>
+					<tr>
+						<th>タイトル</th>
+						<th>出版社</th>
+						<th>著者</th>
+						<th>返却期限</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</section>
+		<section class="uk-section uk-container uk-container-xsmall">
+			<h3 class="uk-text-danger">注意事項</h3>
+			<div class="uk-card uk-card-default uk-card-body">
+				<b class="uk-card-title">返却前にご確認ください。</b>
+				<ul>
+					<li>返却書籍に新たな破損はないこと。</li>
+					<li>返却書籍は確実に本棚に戻したこと。</li>
+					<li>返却書籍の紛失や破損は最後に返却した人の責任になります。</li>
+				</ul>
+				<p>以上の確認事項を読んだ上、確認を押してください。</p>
+			</div>
+			<div class="uk-margin uk-align-center">
+				<button class="uk-button uk-button-primary" id="confirm" type="button">確認</button>
+				<button class="uk-button uk-button-default" id="back" type="button">キャンセル</button>
+			</div>
+		</section>
+
+		<!--
+		<div>
+			<h1>返却書籍:</h1>
+			<table id=table></table>
+		</div>
+		<div>
+			<h1>注意事項</h1>
+				<div id=warningContainer>
+					<h1>返却前にご確認ください。</h1>
+					<ul>
+					<li>返却書籍に新たな破損はないこと。</li>
+					<li>返却書籍は確実に本棚の元の位置に戻したこと。</li>
+					<li>返却書籍の紛失や破損は最後に借りた人の責任となること。</li>
+					</ul>
+					<p>以上の注意事項を読んだ上、返却を確認してください。</p>
+				</div>
+		</div>
+		<div id=buttonsContainer>
+			<button id=confirm type="button">確認</button>
+			<button id=back type="button">キャンセル</button>
+		</div>
+		-->
+	</article>
+</body>
+</html>
