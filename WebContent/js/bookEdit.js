@@ -6,13 +6,49 @@ function loginCertification(){
 		success : function(json) {
 			if(json.result !== "true"){
 				alert('ログインしてください')
-				location.href = "./login.html"
+				location.href = "/BookManageSystem/login.html"
 			}
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
 			alert('データベースへの更新に失敗しました。');
 		}
 	});
+}
+
+function initializeValidateRules() {
+	jQuery.validator.addMethod("smallerThan", function(value, element) {
+		return new Date() > new Date(value)
+	}, '今日以前の日付を入力してください')
+
+	$("form").validate({
+		rules : {
+			"book_title" : {
+				required : true
+			},
+			"publisher_name" : {
+				required : true
+			},
+			"book_purchaser_name" : {
+				required : true
+			},
+			"book_purchased_at" : {
+				required : true,
+				smallerThan : true
+			}
+		}
+	})
+
+	$(".author_name").each(function() {
+		$(this).rules("add", {
+			required : true
+		})
+	})
+
+	$(".genre_name").each(function() {
+		$(this).rules("add", {
+			required : true
+		})
+	})
 }
 
 function bookInitialize() {
@@ -119,6 +155,29 @@ function removeForm(span) {
 }
 
 function submit() {
+	const requestQuery = buildRequestQuery()
+
+	console.log(requestQuery)
+
+	if ($("form").valid()) {
+		$.ajax({
+			type: "POST",
+			url: "/BookManageSystem/api/book/edit",
+			dataType: "json",
+			data: requestQuery,
+			success: function(result) {
+				if (result == true) {
+					alert("更新しました。")
+					location.href = "/BookManageSystem/book/show.html?bookId=" + bookId
+				} else {
+					alert("更新に失敗しました。")
+				}
+			}
+		})
+	}
+}
+
+function buildRequestQuery() {
 	let parameter  = location.search.substring( 1, location.search.length )
 	parameter = decodeURIComponent(parameter)
 	const bookId = parameter.split('=')[1]
@@ -126,8 +185,8 @@ function submit() {
 	const bookPurchaserName = $("#book_purchaser_name").val()
 	const bookPurchasedAt = $("#book_purchased_at").val()
 	const publisherName = $("#publisher_name").val()
-	const authorNameList = $.unique($(".author_name").map(function(index, element) {return element.value}))
-	const genreNameList  = $.unique($(".genre_name").map(function(index, element) {return element.value}))
+	const authorNameList = $.unique($(".author_name").map(function(index, element) {return element.value}).filter(function(el) {return el != null}))
+	const genreNameList  = $.unique($(".genre_name").map(function(index, element) {return element.value}).filter(function(el) {return el != null}))
 
 	const requestQuery = {
 		book: {
@@ -143,25 +202,13 @@ function submit() {
 		genres: $.makeArray(genreNameList)
 	}
 
-	$.ajax({
-		type: "POST",
-		url: "/BookManageSystem/api/book/edit",
-		dataType: "json",
-		data: requestQuery,
-		success: function(result) {
-			if (result == true) {
-				alert("更新しました。")
-				location.href = "/BookManageSystem/book/show.html?bookId=" + bookId
-			} else {
-				alert("更新に失敗しました。")
-			}
-		}
-	})
+	return requestQuery
 }
 
 $(document).ready(function() {
 	'use strict'
 	loginCertification()
+	initializeValidateRules()
 	bookInitialize()
 
 	$("#submit").bind('click', submit)
