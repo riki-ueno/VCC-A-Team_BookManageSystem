@@ -58,7 +58,7 @@ var getrentalInfo = function(){
 }
 var returnBook = function(){
 	var inputRentalId = document.activeElement.value;
-	var url = './returnConfirm.html?rentalId='+inputRentalId;
+	var url = '/BookManageSystem/book/returnConfirm.html?rentalId='+inputRentalId;
 	location.href=url;
 }
 var getReservationInfo = function(){
