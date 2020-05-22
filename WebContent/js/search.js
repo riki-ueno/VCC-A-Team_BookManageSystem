@@ -15,7 +15,7 @@ function loginCertification(){
 	});
 }
 
-function initialize() {
+function initial() {
 	'use strict'
 
 	$.ajax({
@@ -199,6 +199,6 @@ $(document).ready(function () {
 	'use strict'
 
 	loginCertification()
-    initialize()
+    initial()
     $("#submit").bind('click', submit)
 });
