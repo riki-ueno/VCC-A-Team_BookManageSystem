@@ -35,11 +35,6 @@ public class SearchServlet extends HttpServlet {
 		String authorName    = request.getParameter("author[name]");
 		String publisherName = request.getParameter("publisher[name]");
 		String genreName     = request.getParameter("genre[name]");
-		System.out.println(bookTitle);
-		System.out.println(bookStatus);
-		System.out.println(authorName);
-		System.out.println(publisherName);
-		System.out.println(genreName);
 
 		List<Book> bookList = SearchService.call(bookTitle, bookStatus, authorName, publisherName, genreName);
 

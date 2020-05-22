@@ -6,7 +6,7 @@ function loginCertification(){
 		success : function(json) {
 			if(json.result !== "true"){
 				alert('ログインしてください')
-				location.href = "./login.html"
+				location.href = "/BookManageSystem/login.html"
 			}
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
@@ -84,9 +84,6 @@ function submit() {
 			}
 		}
 
-
-
-
 	$.ajax({
 		type: "GET",
 		url: "/BookManageSystem/api/book/search",
@@ -133,7 +130,7 @@ function submit() {
 				html += ("<tr>" +
 					"<td>" + (index + 1) + "</td>" +
 					"<td>" + (book.genreNames || "") + "</td>" +
-					"<td>" + book.title + "</td>" +
+					"<td><a href='/BookManageSystem/book/show.html?bookId=" + book.id + "'>" + book.title + "</a></td>" +
 					"<td>" + (book.publisher.name || "") + "</td>" +
 					"<td>" + (book.authorNames || "") + "</td>" +
 					"<td>" + status + "</td>" +

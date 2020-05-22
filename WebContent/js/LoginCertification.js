@@ -9,7 +9,7 @@ var LoginCertificate = function(){
 		success : function(json) {
 			if(json.result === "true"){
 				alert('ログイン済みです。');
-				location.href = "./search.html"
+				location.href = "/BookManageSystem/book/search.html"
 			}
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){

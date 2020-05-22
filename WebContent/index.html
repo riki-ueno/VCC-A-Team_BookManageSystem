@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="/BookManageSystem/js/jquery-3.5.1.min.js"></script>
+<script src="/BookManageSystem/js/jquery.validate.min.js"></script>
+<script>
+	function ge() {
+		$("#form").validate({
+			rules: {
+				name: {
+					required: true
+				},
+				email: {
+					required: true
+				}
+			}
+		})
+
+		console.log($("#form").valid())
+	}
+</script>
+</head>
+<body>
+</body>
+</html>
