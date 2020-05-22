@@ -50,6 +50,7 @@ var getrentalInfo = function(){
 						tableElemnt += '<td>'+rental.book.authorNames+'</td>';
 						tableElemnt += '<td>'+rental.returnDeadline+'</td>';
 						tableElemnt += '<td><button class=returnBook type="submit" value="'+rental.id+'">返却</button></td>';
+						tableElemnt +='</tr>';
 					}
 				$('#rentalTable').html(tableElemnt);
 				$('.returnBook').click(returnBook);
@@ -66,7 +67,7 @@ var getrentalInfo = function(){
 }
 var returnBook = function(){
 	var inputRentalId = document.activeElement.value;
-	var url = './rentalConfirm.html?rentalId='+inputRentalId;
+	var url = './returnConfirm.html?rentalId='+inputRentalId;
 	location.href=url;
 }
 var getReservationInfo = function(){
