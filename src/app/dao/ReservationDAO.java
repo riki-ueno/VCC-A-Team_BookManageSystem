@@ -114,6 +114,7 @@ public class ReservationDAO extends DAOBase {
 				"and ah.ID = ba.AUTHOR_ID \n" +
 				"and bg.BOOK_ID = b.ID \n" +
 				"and g.ID = bg.GENRE_ID \n" +
+				"and rt.RETURNED_AT is null \n" +
 				" \n" +
 				"group by \n" +
 				"b.ID,b.RESERVER_ID,b.TITLE,p.NAME,rt.RETURNED_AT \n" +
