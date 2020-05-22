@@ -23,4 +23,20 @@ public class BooksGenresDAO extends DAOBase {
 			throw new RuntimeException(String.format("検索処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
 		}
 	}
+
+	public boolean delete(int bookId) {
+		String sql = "DELETE FROM books_genres WHERE book_id = ?";
+
+		try (
+			PreparedStatement pstmt = createPreparedStatement(sql);
+		) {
+			pstmt.setInt(1, bookId);
+
+			int count = pstmt.executeUpdate();
+
+			return count > 0;
+		} catch (SQLException e) {
+			throw new RuntimeException(String.format("削除処理の実施中にエラーが発生しました。詳細:[%s]", e.getMessage()));
+		}
+	}
 }

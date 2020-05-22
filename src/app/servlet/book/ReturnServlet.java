@@ -17,14 +17,19 @@ import app.model.Return;
 /**
  * Servlet implementation class Return
  */
-@WebServlet("/Return")
+@WebServlet("/api/auth/Return")
 public class ReturnServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     public ReturnServlet() {
         super();
     }
-
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		ReturnsDAO returnsDAO = new ReturnsDAO();
+		String rentalId = request.getParameter("rentalId");
+		PrintWriter pw = response.getWriter();
+		pw.append(new ObjectMapper().writeValueAsString(returnsDAO.returnBookdetail(rentalId)));
+	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int rentalId = Integer.parseInt(request.getParameter("rental[id]"));
 

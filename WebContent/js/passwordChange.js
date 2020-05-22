@@ -38,7 +38,9 @@ var LoginCertificate = function(){
 		url : '/BookManageSystem/api/auth/loginCertification',
 		success : function(json) {
 			if(json.result === "true"){
-				alert('ログイン済みです。');
+			}else{
+				alert('ログインしてください。')
+				location.href = "./login.html"
 			}
 		},
 		error:function(XMLHttpRequest, textStatus, errorThrown){
