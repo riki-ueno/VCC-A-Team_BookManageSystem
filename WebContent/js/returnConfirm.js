@@ -8,6 +8,7 @@ var LoginCertificate = function(){
 		url : '/BookManageSystem/api/auth/loginCertification',
 		success : function(json) {
 			if(json.result === "true"){
+			    getReturnBookInfo();
 			}else{
 				alert('ログインしてください。')
 				location.href = "./login.html"
@@ -79,7 +80,6 @@ var back = function(){
 $(document).ready(function () {
 	 'use strict';
     LoginCertificate();
-    getReturnBookInfo();
     $('#confirm').click(confirm);
     $('#back').click(back);
 });
