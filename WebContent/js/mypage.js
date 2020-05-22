@@ -40,7 +40,8 @@ var getrentalInfo = function(){
 						tableElemnt += '<td>'+rental.book.publisher.name+'</td>';
 						tableElemnt += '<td>'+rental.book.authorNames+'</td>';
 						tableElemnt += '<td>'+rental.returnDeadline+'</td>';
-						tableElemnt += '<td><button class="returnBook uk-button uk-button default" type="submit" value="'+rental.id+'">返却</button></td>';
+						tableElemnt += '<td><button class="returnBook uk-button uk-button-default" type="button" value="'+rental.id+'">返却</button></td>';
+						tableElemnt += '</tr>';
 					}
 				$('#rental_table tbody').html(tableElemnt);
 				$('.returnBook').click(returnBook);
@@ -57,7 +58,7 @@ var getrentalInfo = function(){
 }
 var returnBook = function(){
 	var inputRentalId = document.activeElement.value;
-	var url = './rentalConfirm.html?rentalId='+inputRentalId;
+	var url = './returnConfirm.html?rentalId='+inputRentalId;
 	location.href=url;
 }
 var getReservationInfo = function(){
@@ -83,6 +84,7 @@ var getReservationInfo = function(){
 						if(reservation.returnedAt != null){
 							tableElemnt += '<td><button class="rental uk-button uk-button-default uk-button-small" type="submit" value="'+reservation.book.id+'">借りる</button></td>';
 						}
+						tableElemnt += '</tr>';
 					}
 				$('#reservation_table tbody').html(tableElemnt);
 				$('.cancel').click(cancel);
