@@ -66,6 +66,7 @@ function submit() {
 	const authorName = $("#author_name").val()
 	const genreName = $("#genre_name").val()
 	const bookStatus = $("#book_status").val()
+	const sortCondition = $("#sort_condition").val()
 
 	const requestQuery =
 		{
@@ -81,7 +82,8 @@ function submit() {
 			},
 			genre: {
 				name: genreName
-			}
+			},
+			sortCondition: sortCondition
 		}
 
 	$.ajax({
@@ -96,7 +98,7 @@ function submit() {
 				let status;
 				if (book.reserverId != 0) {
 					status = "予約中"
-				} else if (book.rentals[0].returnObj.returnedAt == null && book.rentals[0].returnDeadline != null) {
+				} else if (book.rentals[0].returnDeadline != null) {
 					status = "貸出中"
 				} else {
 					status = "貸出可"
@@ -198,4 +200,7 @@ $(document).ready(function () {
 	loginCertification()
     initial()
     $("#submit").bind('click', submit)
+    $("#sort_condition").change(function() {
+    	submit()
+    })
 });

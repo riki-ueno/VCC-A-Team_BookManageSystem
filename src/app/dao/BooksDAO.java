@@ -12,7 +12,6 @@ import app.model.Book;
 import app.model.Genre;
 import app.model.Publisher;
 import app.model.Rental;
-import app.model.Return;
 
 public class BooksDAO extends DAOBase {
 	public BooksDAO() {
@@ -76,36 +75,44 @@ public class BooksDAO extends DAOBase {
 		}
 	}
 
-	public List<Book> all(HashMap<String, String> searchCondition, String selectCondition) {
-		String sql = "select BOOKS.ID, " +
-				"BOOKS.TITLE, " +
-				"BOOKS.RESERVER_ID, " +
-				"PUBLISHERS.NAME PUBLISHER_NAME, " +
-				"author_name_table.author_names, " +
-				"genre_name_table.genre_names, " +
-				"main.RETURN_DEADLINE, " +
-				"RETURNS.RETURNED_AT " +
+	public List<Book> all(HashMap<String, String> searchCondition, String selectCondition, String sortCondition) {
+		String sql =
+				"select BOOKS.ID, " +
+						"BOOKS.TITLE, " +
+						"BOOKS.RESERVER_ID, " +
+						"PUBLISHERS.NAME PUBLISHER_NAME, " +
+						"author_name_table.author_names, " +
+						"genre_name_table.genre_names, " +
+						"rental_count_table.rental_count, " +
+						"case " +
+							"when main.RETURN_DEADLINE is not NULL AND RETURNS.RETURNED_AT is not null then null " +
+							"else main.RETURN_DEADLINE " +
+							"end RETURN_DEADLINE " +
 				"from BOOKS " +
-				"LEFT JOIN ( " +
-				"select BOOKS.ID books_id, LISTAGG(AUTHORS.NAME, '/') within group (order by AUTHORS.NAME) author_names "
-				+
-				"from BOOKS " +
-				"left join BOOKS_AUTHORS BA on BOOKS.ID = BA.BOOK_ID " +
-				"left join AUTHORS on BA.AUTHOR_ID = AUTHORS.ID " +
-				"group by BOOKS.ID " +
+						"LEFT JOIN ( " +
+					"select BOOKS.ID books_id, LISTAGG(AUTHORS.NAME, '/') within group (order by AUTHORS.NAME) author_names " +
+					"from BOOKS " +
+							"left join BOOKS_AUTHORS BA on BOOKS.ID = BA.BOOK_ID " +
+							"left join AUTHORS on BA.AUTHOR_ID = AUTHORS.ID " +
+					"group by BOOKS.ID " +
 				") author_name_table on author_name_table.books_id = BOOKS.ID " +
-				"LEFT JOIN ( " +
-				"select BOOKS.ID books_id, LISTAGG(GENRES.NAME, '/') within group (order by GENRES.NAME) genre_names " +
-				"from BOOKS " +
-				"left join BOOKS_GENRES BG on BOOKS.ID = BG.BOOK_ID " +
-				"left join GENRES on BG.GENRE_ID = GENRES.ID " +
-				"group by BOOKS.ID " +
+						"LEFT JOIN ( " +
+					"select BOOKS.ID books_id, LISTAGG(GENRES.NAME, '/') within group (order by GENRES.NAME) genre_names " +
+					"from BOOKS " +
+						"left join BOOKS_GENRES BG on BOOKS.ID = BG.BOOK_ID " +
+						"left join GENRES on BG.GENRE_ID = GENRES.ID " +
+					"group by BOOKS.ID " +
 				") genre_name_table on genre_name_table.books_id = BOOKS.ID " +
-				"LEFT JOIN PUBLISHERS on BOOKS.PUBLISHER_ID = PUBLISHERS.ID " +
-				"LEFT JOIN RENTALS main on BOOKS.ID = main.BOOK_ID " +
-				"LEFT JOIN RENTALS sub on sub.BOOK_ID = main.BOOK_ID and sub.id > main.ID " +
-				"LEFT JOIN RETURNS on main.id = RETURNS.RENTAL_ID " +
-				"where sub.ID is null";
+						"LEFT JOIN (" +
+					"select rentals.book_id books_id, count(*) rental_count " +
+					"from RENTALS " +
+					"group by BOOK_ID " +
+				") rental_count_table on rental_count_table.books_id = BOOKS.ID " +
+						"LEFT JOIN PUBLISHERS on BOOKS.PUBLISHER_ID = PUBLISHERS.ID " +
+						"LEFT JOIN RENTALS main on BOOKS.ID = main.BOOK_ID " +
+						"LEFT JOIN RENTALS sub on sub.BOOK_ID = main.BOOK_ID and sub.id > main.ID " +
+						"LEFT JOIN RETURNS on main.id = RETURNS.RENTAL_ID " +
+				"where sub.ID is null ";
 
 		String searchConditionQuery = String.join(" AND ", searchCondition.keySet());
 		if (searchConditionQuery.isEmpty()) {
@@ -114,7 +121,7 @@ public class BooksDAO extends DAOBase {
 			searchConditionQuery += (" AND " + selectCondition);
 		}
 
-		sql += (" AND " + searchConditionQuery + " order by BOOKS.ID");
+		sql += (" AND " + searchConditionQuery + sortCondition);
 
 		try (
 				PreparedStatement pstmt = createPreparedStatement(sql);) {
@@ -140,9 +147,6 @@ public class BooksDAO extends DAOBase {
 				List<Rental> rentalList = new ArrayList<Rental>();
 				Rental rental = new Rental();
 				rental.setReturnDeadline(rs.getDate("return_deadline"));
-				Return returnObj = new Return();
-				returnObj.setReturnedAt(rs.getDate("returned_at"));
-				rental.setReturnObj(returnObj);
 				rentalList.add(rental);
 				book.setRentals(rentalList);
 				Publisher publisher = new Publisher();
