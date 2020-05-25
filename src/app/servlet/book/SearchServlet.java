@@ -35,8 +35,9 @@ public class SearchServlet extends HttpServlet {
 		String authorName    = request.getParameter("author[name]");
 		String publisherName = request.getParameter("publisher[name]");
 		String genreName     = request.getParameter("genre[name]");
+		String sortCondition = request.getParameter("sortCondition");
 
-		List<Book> bookList = SearchService.call(bookTitle, bookStatus, authorName, publisherName, genreName);
+		List<Book> bookList = SearchService.call(bookTitle, bookStatus, authorName, publisherName, genreName, sortCondition);
 
 		PrintWriter pw = response.getWriter();
 		pw.append(new ObjectMapper().writeValueAsString(bookList));
