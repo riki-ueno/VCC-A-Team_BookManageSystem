@@ -34,8 +34,9 @@ public class ReservationDAO extends DAOBase {
 				book.setGenreNames(genreNames);
 				book.setTitle(rs1.getString("TITLE"));
 				book.setId(rs1.getInt("BOOKID"));
+				BooksDAO BooksDAO = new BooksDAO();
+				reservation.setAvailableForRental(BooksDAO.isAvailableForRental(rs1.getInt("BOOKID"), rs1.getInt("ID")));
 				book.setPurchaserName(rs1.getString("PUBULISHER_NAME"));
-				reservation.setReturnedAt(rs1.getDate("RETURNED_AT"));
 				reservation.setBook(book);
 				reservationList.add(reservation);
 			}
@@ -84,12 +85,12 @@ public class ReservationDAO extends DAOBase {
 		}
 	}
 	private String creatReservationSql(String name) {
-		String sql = "select \n" +
-				"b.ID bookId \n" +
+		String sql ="select \n" +
+				"a.ID \n" +
+				",b.ID bookId \n" +
 				",b.RESERVER_ID \n" +
 				",b.TITLE \n" +
 				",p.NAME pubulisher_name \n" +
-				",rt.RETURNED_AT \n" +
 				",LISTAGG(ah.NAME, '/') WITHIN GROUP (order by ah.NAME) AS authors_name \n" +
 				",LISTAGG(g.NAME, '/') WITHIN GROUP (order by g.NAME) AS genres_name \n" +
 				" \n" +
@@ -97,8 +98,6 @@ public class ReservationDAO extends DAOBase {
 				"BOOKS b \n" +
 				",ACCOUNTS a \n" +
 				",PUBLISHERS p \n" +
-				",RENTALS r \n" +
-				",RETURNS rt \n" +
 				",BOOKS_AUTHORS ba \n" +
 				",AUTHORS ah \n" +
 				",GENRES g \n" +
@@ -108,16 +107,13 @@ public class ReservationDAO extends DAOBase {
 				"and a.NAME = '"+name+"' \n" +
 				"and b.RESERVER_ID = a.ID \n" +
 				"and b.PUBLISHER_ID = p.ID \n" +
-				"and b.ID = r.BOOK_ID(+) \n" +
-				"and r.ID = rt.RENTAL_ID(+) \n" +
 				"and ba.BOOK_ID = b.ID \n" +
 				"and ah.ID = ba.AUTHOR_ID \n" +
 				"and bg.BOOK_ID = b.ID \n" +
 				"and g.ID = bg.GENRE_ID \n" +
-				"and rt.RETURNED_AT is null \n" +
 				" \n" +
 				"group by \n" +
-				"b.ID,b.RESERVER_ID,b.TITLE,p.NAME,rt.RETURNED_AT \n" +
+				"b.ID,b.RESERVER_ID,b.TITLE,p.NAME,a.ID \n" +
 				"order by \n" +
 				"b.ID \n";
 		return sql;

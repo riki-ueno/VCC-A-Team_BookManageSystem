@@ -33,9 +33,9 @@ public class BookDetailDAO extends DAOBase {
 				int returnID = rs1.getInt("RETURNID");
 				int reserverID = rs1.getInt("RESERVER_ID");
 				if(rentalID == 0){
-					bookdetail.setStatus("利用可");
+					bookdetail.setStatus("貸出可");
 				}else if(returnID != 0 && reserverID == 0){
-					bookdetail.setStatus("利用可");
+					bookdetail.setStatus("貸出可");
 					bookdetail.setLastRentedName(rs1.getString("RENTEDNAME"));
 				}else if(returnID == 0 && reserverID == 0){
 					bookdetail.setStatus("貸出中");

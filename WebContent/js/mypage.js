@@ -1,4 +1,4 @@
-/**
+	/**
  *
  */
 var LoginCertificate = function(){
@@ -81,7 +81,7 @@ var getReservationInfo = function(){
 						tableElemnt += '<td>'+reservation.book.purchaserName+'</td>';
 						tableElemnt += '<td>'+reservation.book.authorNames+'</td>';
 						tableElemnt += '<td><button class="cancel uk-button uk-button-default uk-button-small" type="submit" value="'+reservation.book.id+'">キャンセル</button></td>';
-						if(reservation.returnedAt != null){
+						if(reservation.availableForRental){
 							tableElemnt += '<td><button class="rental uk-button uk-button-default uk-button-small" type="submit" value="'+reservation.book.id+'">借りる</button></td>';
 						}
 						tableElemnt += '</tr>';
