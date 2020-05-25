@@ -10,6 +10,13 @@ public class Reservation {
 	private Date returnedAt;
 	private String bookAuthorsName;
 	private String bookGenresName;
+	private boolean isAvailableForRental;
+	public boolean isAvailableForRental() {
+		return isAvailableForRental;
+	}
+	public void setAvailableForRental(boolean isAvailableForRental) {
+		this.isAvailableForRental = isAvailableForRental;
+	}
 	public String getBookAuthorsName() {
 		return bookAuthorsName;
 	}
