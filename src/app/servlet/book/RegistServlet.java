@@ -115,7 +115,9 @@ public class RegistServlet extends HttpServlet {
 		}
 
 		PrintWriter pw = response.getWriter();
-		pw.append(new ObjectMapper().writeValueAsString (bookId));
+
+		pw.append(new ObjectMapper().writeValueAsString(bookId));
+
 	}
 
 }

@@ -157,8 +157,6 @@ function removeForm(span) {
 function submit() {
 	const requestQuery = buildRequestQuery()
 
-	console.log(requestQuery)
-
 	if ($("form").valid()) {
 		$.ajax({
 			type: "POST",

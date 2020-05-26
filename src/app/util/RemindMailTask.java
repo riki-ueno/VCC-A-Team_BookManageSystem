@@ -14,8 +14,8 @@ public class RemindMailTask extends TimerTask {
 
 	@Override
 	public void run() { // 実行内容
-		// List<Remind> remindList = getDelinquentList();
-		// remindMail(remindList);
+		 List<Remind> remindList = getDelinquentList();
+		 remindMail(remindList);
 	}
 
 	public static List<Remind> getDelinquentList() { // 延滞リストの取得
@@ -28,12 +28,12 @@ public class RemindMailTask extends TimerTask {
 		// 送信アドレスは"testAddress.lib@gmail.com"
 
 		// テスト用受信アドレス
-		String reciever = "testAddress.lib@gmail.com";
+//		String reciever = "testAddress.lib@gmail.com";
 
 		String subject = "【図書管理システム】未返却図書のお知らせ";
 		for (int i = 0; i < remindList.size(); i++) {
 			Remind remind = remindList.get(i);
-			// String reciever = remind.getMailAddress();
+			String reciever = remind.getMailAddress();
 			String accountName = remind.getAccountName();
 
 			String delayBookInformation = "・" + remind.getBookTitle() + "/" + remind.getPublisherName()

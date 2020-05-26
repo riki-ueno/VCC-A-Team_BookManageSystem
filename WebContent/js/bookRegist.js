@@ -120,41 +120,44 @@ function regist() {
 
 	var requestQuery = buildRequestQuery()
 
-	$.ajax({
-		type : 'POST',
-		url : '/BookManageSystem/api/book/regist',
-		dataType : 'text',
-		data : requestQuery,
-		success : function(bookId) {
-			alert('書籍の登録が完了しました。');
-			console.log(bookId);
-			location.href = '/BookManageSystem/book/show.html?bookId='
-					+ bookId;
-		},
-		error : function() {
-			alert('登録できませんでした。入力情報を確認してください。');
-		}
-	});
+	if ($("#regist_form").valid()) {
+		$.ajax({
+			type : 'POST',
+			url : '/BookManageSystem/api/book/regist',
+			dataType : 'text',
+			data : requestQuery,
+			success : function(bookId) {
+				alert('書籍の登録が完了しました。');
+				console.log(bookId);
+				location.href = '/BookManageSystem/book/show.html?bookId='
+						+ bookId;
+			},
+			error : function() {
+				alert('登録できませんでした。入力情報を確認してください。');
+			}
+		});
+	}
 }
 
 function registContinue() {
 	initializeValidateRules()
 
-	var requestQuery = buildRequestQuery()
+	if ($("#regist_form").valid()) {
+		$.ajax({
+			type : 'POST',
+			url : '/BookManageSystem/api/book/regist',
+			dataType : 'text',
+			data : requestQuery,
+			success : function(bookId) {
+				alert('書籍の登録が完了しました。');
+				location.reload();
+			},
+			error : function() {
+				alert('登録できませんでした。入力情報を確認してください。');
+			}
+		});
+	}
 
-	$.ajax({
-		type : 'POST',
-		url : '/BookManageSystem/api/book/regist',
-		dataType : 'text',
-		data : requestQuery,
-		success : function(bookId) {
-			alert('書籍の登録が完了しました。');
-			location.reload();
-		},
-		error : function() {
-			alert('登録できませんでした。入力情報を確認してください。');
-		}
-	});
 }
 
 function buildRequestQuery() {
