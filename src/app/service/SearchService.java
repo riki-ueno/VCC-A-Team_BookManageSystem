@@ -38,7 +38,7 @@ public class SearchService {
 				sortCondition = " order by rental_count desc nulls last";
 				break;
 			case "返却期限":
-				sortCondition = " order by return_deadline desc nulls last";
+				sortCondition = " order by return_deadline asc nulls last";
 				break;
 		}
 
