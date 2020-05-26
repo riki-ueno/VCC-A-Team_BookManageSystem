@@ -128,7 +128,7 @@ function regist() {
 		success : function(bookId) {
 			alert('書籍の登録が完了しました。');
 			console.log(bookId);
-			location.href = '/BookManageSystem/book/show.html/?bookId='
+			location.href = '/BookManageSystem/book/show.html?bookId='
 					+ bookId;
 		},
 		error : function() {

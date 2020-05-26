@@ -95,17 +95,17 @@ public class BookDetailDAO extends DAOBase {
 				",ACCOUNTS ac4 \n" +
 				"where 1=1 \n" +
 				"and b.ID = '"+bookID+"' \n" +
-				"and ba.BOOK_ID = b.ID \n" +
-				"and a.ID = ba.AUTHOR_ID \n" +
-				"and b.PUBLISHER_ID = p.ID \n" +
-				"and bg.BOOK_ID = b.ID \n" +
-				"and bg.GENRE_ID = g.ID \n" +
+				"and ba.BOOK_ID(+) = b.ID \n" +
+				"and a.ID(+) = ba.AUTHOR_ID \n" +
+				"and b.PUBLISHER_ID = p.ID(+) \n" +
+				"and bg.BOOK_ID = b.ID(+) \n" +
+				"and bg.GENRE_ID = g.ID(+) \n" +
 				"and b.ID = r.BOOK_ID(+) \n" +
 				"and r.ID = rt.RENTAL_ID(+) \n" +
-				"and r.ACCOUNT_ID = ac.ID(+)  \n" +
-				"and b.RESERVER_ID = ac2.ID(+)  \n" +
-				"and b.REGISTER_ID = ac3.ID(+)  \n" +
-				"and b.UPDATER_ID = ac4.ID(+)  \n" +
+				"and r.ACCOUNT_ID = ac.ID(+) \n" +
+				"and b.RESERVER_ID = ac2.ID(+) \n" +
+				"and b.REGISTER_ID = ac3.ID(+) \n" +
+				"and b.UPDATER_ID = ac4.ID(+) \n" +
 				"GROUP BY \n" +
 				"b.TITLE,p.NAME,r.ID,r.RETURN_DEADLINE,rt.ID,b.RESERVER_ID,ac.NAME,ac2.NAME,b.PURCHASER_NAME,b.PURCHASED_AT,ac3.NAME,b.REGISTERED_AT,b.UPDATED_AT,ac4.NAME \n" +
 				"order by \n" +
